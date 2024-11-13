@@ -15,6 +15,7 @@ public class GameFrame extends JFrame {
     private GameController controller;
     private JButton restartBtn;
     private JButton loadBtn;
+    private JButton AISloveBtn;
 
     private JLabel stepLabel;
     private GamePanel gamePanel;
@@ -31,6 +32,7 @@ public class GameFrame extends JFrame {
 
         this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
         this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
+        this.AISloveBtn = FrameUtil.createButton(this,"AI Solver", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
         this.stepLabel = FrameUtil.createJLabel(this, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50);
         gamePanel.setStepLabel(stepLabel);
 
@@ -49,6 +51,11 @@ public class GameFrame extends JFrame {
                 System.out.print("");
             }
             gamePanel.requestFocusInWindow();//enable key listener
+        });
+        this.AISloveBtn.addActionListener(e -> {
+            controller.AISolve();
+            gamePanel.requestFocusInWindow();
+            //todo:写一个单独的窗体输出结果
         });
         //todo: add other button here
         this.setLocationRelativeTo(null);

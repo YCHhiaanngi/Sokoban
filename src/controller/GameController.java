@@ -6,6 +6,7 @@ import view.game.*;
 
 import java.io.*;
 
+import static view.game.AISolver.aiSolve;
 import static view.level.LevelFrame.getCurrentLevel;
 
 /**
@@ -99,6 +100,11 @@ public class GameController {
     }
 
     //todo: add other methods such as loadGame, saveGame...
+
+    public void AISolve(){
+        System.out.println("Path: "+aiSolve(model.getMatrix()).getPath());
+        System.out.println("Length: "+aiSolve(model.getMatrix()).getLength());
+    }
 
 
     public int countLine(File file) throws IOException {
