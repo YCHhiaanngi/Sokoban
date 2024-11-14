@@ -102,7 +102,7 @@ public class GameController {
                     winFrame = new WinFrame(600, 200, getCurrentLevel());
                     winFrame.setVisible(true);
                 }
-                if (isLose()) {
+                if (isLose() && !isWin()) {
                     loseFrame = new LoseFrame(600, 200, getCurrentLevel());
                     loseFrame.setVisible(true);
                 }
