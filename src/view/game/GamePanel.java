@@ -101,12 +101,12 @@ public class GamePanel extends ListenerPanel {
     public void afterMove() {
         this.steps++;
         this.stepLabel.setText(String.format("Step: %d", this.steps));
-        for(int i=0;i<grids.length;i++){
-            for(int j=0;j<grids[0].length;j++){
-                System.out.print(model.getMatrix()[i][j]+"\t");
-            }
-            System.out.println();
-        }
+//        for(int i=0;i<grids.length;i++){
+//            for(int j=0;j<grids[0].length;j++){
+//                System.out.print(model.getMatrix()[i][j]+"\t");
+//            }
+//            System.out.println();
+//        }
     }
 
     public void setStepLabel(JLabel stepLabel) {

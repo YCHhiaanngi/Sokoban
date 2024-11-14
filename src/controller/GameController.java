@@ -3,6 +3,8 @@ package controller;
 import model.Direction;
 import model.MapMatrix;
 import view.game.*;
+import view.lose.LoseFrame;
+import view.win.WinFrame;
 
 import java.io.*;
 
@@ -17,6 +19,8 @@ public class GameController {
     private GamePanel view;
     private MapMatrix model;
     private LoadLevelFrame loadLevelFrame;
+    private WinFrame winFrame;
+    private LoseFrame loseFrame;
 
     public GameController(GamePanel view, MapMatrix model) throws FileNotFoundException {
         this.view = view;
@@ -25,29 +29,29 @@ public class GameController {
     }
 
 
-    public void restartGame() {
-        File file = new File("map/Level"+getCurrentLevel()+".txt");
+    public void restartGame() {//重新开始（关卡模式）
+        File file = new File("map/Level"+getCurrentLevel()+".txt");//从同关卡的初始文件中覆盖当前的MapMatrix
         int[][] map = readArray(file);
         view.removeAll();
         model.setMatrix(map);
         view.initialGame();
     }
 
-    public void restartGame(String path) {
-        File file = new File(path);
+    public void restartGame(String path) {//重新开始（自定义模式）
+        File file = new File(path);//从path中加载关卡文件
         int[][] map = readArray(file);
         view.removeAll();
         model.setMatrix(map);
         view.initialGame();
     }
 
-    public void loadGame(String path){
+    public void loadGame(String path){//加载自定义关卡
 
         try {
-            File file = new File(path);
+            File file = new File(path);//载入文件
             int[][] map = readArray(file);
             model.setMatrix(map);
-            loadLevelFrame = new LoadLevelFrame(600,450,model,path);
+            loadLevelFrame = new LoadLevelFrame(600,450,model,path);//创建新loadLevel窗口
             loadLevelFrame.setVisible(true);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -55,7 +59,7 @@ public class GameController {
 
     }
 
-    public boolean doMove(int row, int col, Direction direction) {
+    public boolean doMove(int row, int col, Direction direction) {//判断是否可以移动，如果可以，就移动，同时判断是否获胜或者已经失败
         GridComponent currentGrid = view.getGridComponent(row, col);
         //target row can column.
         int tRow = row + direction.getRow();
@@ -76,14 +80,15 @@ public class GameController {
             //Update the row and column attribute in hero
             h.setRow(tRow);
             h.setCol(tCol);
+
             return true;
         }
         if ((map[tRow][tCol] == 10 || map[tRow][tCol] == 12)&&(map[bRow][bCol] == 0 || map[bRow][bCol] == 2)) {
-            //update hero in MapMatrix
+
             model.getMatrix()[row][col] -= 20;
             model.getMatrix()[tRow][tCol] += 10;
             model.getMatrix()[bRow][bCol] += 10;
-            //Update hero in GamePanel
+
             Hero h = currentGrid.removeHeroFromGrid();
             targetGrid.setHeroInGrid(h);
             h.setRow(tRow);
@@ -92,22 +97,34 @@ public class GameController {
             Box box = targetGrid.removeBoxFromGrid();
             boxGrid.setBoxInGrid(box);
 
-            //Update the row and column attribute in hero
+            try {
+                if (isWin()) {
+                    winFrame = new WinFrame(600, 200, getCurrentLevel());
+                    winFrame.setVisible(true);
+                }
+                if (isLose()) {
+                    loseFrame = new LoseFrame(600, 200, getCurrentLevel());
+                    loseFrame.setVisible(true);
+                }
+            }catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
 
             return true;
         }
+
         return false;
     }
 
     //todo: add other methods such as loadGame, saveGame...
 
-    public void AISolve(){
+    public void AISolve(){//调用aiSolve方法生成最佳路径
         System.out.println("Path: "+aiSolve(model.getMatrix()).getPath());
         System.out.println("Length: "+aiSolve(model.getMatrix()).getLength());
     }
 
 
-    public int countLine(File file) throws IOException {
+    public int countLine(File file) throws IOException {//辅助方法：数行数
         int lines = 0;
         BufferedReader br;
         try {
@@ -122,7 +139,7 @@ public class GameController {
         return lines;
     }
 
-    public int countCol(File file) throws IOException {
+    public int countCol(File file) throws IOException {//辅助方法：数列数
         int rows = 0;
         BufferedReader br;
         try {
@@ -138,7 +155,7 @@ public class GameController {
         }
     }
 
-    public int[][] readArray(File file){
+    public int[][] readArray(File file){//辅助方法：从关卡文件中读取二维数组
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -162,15 +179,50 @@ public class GameController {
 
     }
 
-    public boolean isVictory(){
-        for(int i=0;i<model.getHeight();i++){
-            for(int j=0;j<model.getWidth();j++){
-                if(model.getMatrix()[i][j] == 10){
+    public boolean isWin() throws FileNotFoundException {//辅助方法：判定是否胜利
+        int[][] grid = model.getMatrix();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if(grid[i][j] == 10){
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    public boolean isLose(){//辅助方法：判断是否失败
+        int[][] grid = model.getMatrix();
+        int sum = 0;
+        for (int i = 1; i < model.getHeight()-1; i++) {
+            for (int j = 1; j < model.getWidth()-1; j++) {
+                if(grid[i][j] == 10){//检测是否可以前往上下左右中的任意方向。
+                    // 可以被推动需要同时满足两个条件：一侧有空位或者玩家或者目标点并且对侧是空位或者目标点或者玩家
+                    System.out.println(i+" "+j);
+                    if((grid[i-1][j] == 0 || grid[i-1][j]/10 == 2 || grid[i-1][j] == 2) && (grid[i+1][j] == 0 || grid[i+1][j]/10 == 2 || grid[i+1][j] == 2)){
+                        sum++;
+                        System.out.println(true);
+                    }
+//                    if((grid[i+1][j] == 0 || grid[i+1][j]/10 == 2 || grid[i+1][j] == 2) && (grid[i-1][j] == 0 || grid[i-1][j]/10 == 2) || grid[i-1][j] == 2){
+//                        sum++;
+//                        System.out.println(true);
+//                    }
+                    if((grid[i][j-1] == 0 || grid[i][j-1]/10 == 2 || grid[i][j-1] == 2) && (grid[i][j+1] == 0 || grid[i][j+1]/10 == 2 || grid[i][j+1] == 2)){
+                        sum++;
+                        System.out.println(true);
+                    }
+//                    if((grid[i][j+1] == 0 || grid[i][j+1]/10 == 2 || grid[i][j+1] == 2) && (grid[i][j-1] == 0 || grid[i][j-1]/10 == 2)){
+//                        sum++;
+//                        System.out.println(true);
+//                    }
+                    if(sum == 0){
+                        return true;
+                    }
+                    sum = 0;
+                }
+            }
+        }
+        return false;
     }
 
 }

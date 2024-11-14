@@ -9,6 +9,8 @@ import java.awt.*;
 import java.io.FileNotFoundException;
 
 public class LevelFrame extends JFrame {
+
+
     private static int currentLevel;
 
     public LevelFrame(int width, int height) {
@@ -127,5 +129,9 @@ public class LevelFrame extends JFrame {
 
     public static int getCurrentLevel() {
         return currentLevel;
+    }
+
+    public static void setCurrentLevel(int currentLevel) {
+        LevelFrame.currentLevel = currentLevel;
     }
 }

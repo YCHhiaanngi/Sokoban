@@ -2,15 +2,20 @@ package view.game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 
 import controller.GameController;
 import model.MapMatrix;
 import view.FrameUtil;
+import view.lose.LoseFrame;
+import view.win.WinFrame;
 
 import static view.level.LevelFrame.getCurrentLevel;
 
 public class GameFrame extends JFrame {
+
 
     private GameController controller;
     private JButton restartBtn;
@@ -20,6 +25,9 @@ public class GameFrame extends JFrame {
     private JLabel stepLabel;
     private GamePanel gamePanel;
     private LoadLevelFrame loadLevelFrame;
+    private LoseFrame loseFrame;
+    private WinFrame winFrame;
+
 
     public GameFrame(int width, int height, MapMatrix mapMatrix) throws FileNotFoundException {
         this.setTitle("Sokoban   Level:"+getCurrentLevel());
@@ -44,12 +52,8 @@ public class GameFrame extends JFrame {
         this.loadBtn.addActionListener(e -> {
             String string = JOptionPane.showInputDialog(this, "Input path:");
             System.out.println(string);
-            try {
-                controller.loadGame(string);
-                this.setVisible(false);
-            } catch (Exception ex) {
-                System.out.print("");
-            }
+            controller.loadGame(string);
+            this.setVisible(false);
             gamePanel.requestFocusInWindow();//enable key listener
         });
         this.AISloveBtn.addActionListener(e -> {
@@ -58,8 +62,10 @@ public class GameFrame extends JFrame {
             //todo:写一个单独的窗体输出结果
         });
         //todo: add other button here
+
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
+
 
 }
