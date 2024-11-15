@@ -2,18 +2,18 @@ package view.game;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 
 import controller.GameController;
 import model.MapMatrix;
 import view.FrameUtil;
 import view.ai.AIFrame;
+import view.level.LevelFrame;
 import view.lose.LoseFrame;
 import view.win.WinFrame;
 
 import static view.level.LevelFrame.getCurrentLevel;
+import static view.login.LoginFrame.getUserName;
 
 public class GameFrame extends JFrame {
 
@@ -22,10 +22,13 @@ public class GameFrame extends JFrame {
     private JButton restartBtn;
     private JButton loadBtn;
     private JButton AISloveBtn;
+    private JButton saveBtn;
     private JButton upBtn;
     private JButton downBtn;
     private JButton leftBtn;
     private JButton rightBtn;
+    private JButton progressBtn;
+    private JButton selectBtn;
 
     private JLabel stepLabel;
     private GamePanel gamePanel;
@@ -44,14 +47,22 @@ public class GameFrame extends JFrame {
         this.controller = new GameController(gamePanel, mapMatrix);
 
         this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
+        this.selectBtn = FrameUtil.createButton(this, "Select Levels", new Point(gamePanel.getWidth() + 160, 120), 80, 50);
         this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
+        this.progressBtn = FrameUtil.createButton(this, "Get Previous Progress", new Point(gamePanel.getWidth() + 160, 210), 80, 50);
         this.AISloveBtn = FrameUtil.createButton(this,"AI Solver", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
+        this.saveBtn = FrameUtil.createButton(this,"Save", new Point(gamePanel.getWidth() + 160, 300), 80, 50);
         this.upBtn = FrameUtil.createButton(this,"↑", new Point(gamePanel.getWidth() + 110, 360), 30, 30);
         this.downBtn = FrameUtil.createButton(this,"↓", new Point(gamePanel.getWidth() + 110, 390), 30, 30);
         this.leftBtn = FrameUtil.createButton(this,"←", new Point(gamePanel.getWidth() + 80, 390), 30, 30);
         this.rightBtn = FrameUtil.createButton(this,"→", new Point(gamePanel.getWidth() + 140, 390), 30, 30);
         this.stepLabel = FrameUtil.createJLabel(this, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50);
         gamePanel.setStepLabel(stepLabel);
+
+        if(getUserName() == null){
+            saveBtn.setEnabled(false);
+            progressBtn.setEnabled(false);
+        }
 
         this.restartBtn.addActionListener(e -> {
             controller.restartGame();
@@ -76,19 +87,33 @@ public class GameFrame extends JFrame {
         });
         this.upBtn.addActionListener(e -> {
             gamePanel.doMoveUp();
-            gamePanel.afterMove();
+            gamePanel.requestFocusInWindow();
         });
         this.downBtn.addActionListener(e -> {
             gamePanel.doMoveDown();
-            gamePanel.afterMove();
+            gamePanel.requestFocusInWindow();
         });
         this.leftBtn.addActionListener(e -> {
             gamePanel.doMoveLeft();
-            gamePanel.afterMove();
+            gamePanel.requestFocusInWindow();
         });
         this.rightBtn.addActionListener(e -> {
             gamePanel.doMoveRight();
-            gamePanel.afterMove();
+            gamePanel.requestFocusInWindow();
+        });
+        this.saveBtn.addActionListener(e ->{
+            controller.saveGame();
+            gamePanel.requestFocusInWindow();
+        });
+        this.progressBtn.addActionListener(e ->{
+            controller.loadProgress();
+            this.stepLabel.setText("New Start");
+            gamePanel.requestFocusInWindow();
+        });
+        this.selectBtn.addActionListener(e ->{
+            this.setVisible(false);
+            LevelFrame levelFrame = new LevelFrame(500,200);
+            levelFrame.setVisible(true);
         });
 
         //todo: add other button here

@@ -17,6 +17,8 @@ public class LoginFrame extends JFrame {
     private JButton guestBtn;
     private LevelFrame levelFrame;
     private static int count;
+    private static String userName;
+    private static String passWord;
 
 
     public LoginFrame(int width, int height) {
@@ -48,18 +50,24 @@ public class LoginFrame extends JFrame {
                         String line = bReader.readLine();
                         if(line.equals(password.getText())){
                             System.out.println("Password Correct");
+                            userName = username.getText();
+                            passWord = password.getText();
                             if (this.levelFrame != null) {
                                 this.levelFrame.setVisible(true);
                                 this.setVisible(false);
                             }
+                        }else{
+                            System.out.println("Password incorrect.\n" +
+                                    "Please Check your username and password");
                         }
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
+                }else{
+                    System.out.println("You have not register yet.");
                 }
             }
-            System.out.println("Password incorrect.\n" +
-                    "Please Check your username and password");
+
 
             //todo:把这里的控制台输出改成JLabel输出，下面同理，可以改文字的内容
 
@@ -115,7 +123,11 @@ public class LoginFrame extends JFrame {
         this.levelFrame = levelFrame;
     }
 
-    public String getUserName(){
-        return this.username.getText();
+    public static String getUserName(){
+        return userName;
+    }
+
+    public static String getPassword(){
+        return passWord;
     }
 }
