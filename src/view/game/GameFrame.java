@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import controller.GameController;
 import model.MapMatrix;
 import view.FrameUtil;
+import view.ai.AIFrame;
 import view.lose.LoseFrame;
 import view.win.WinFrame;
 
@@ -21,6 +22,10 @@ public class GameFrame extends JFrame {
     private JButton restartBtn;
     private JButton loadBtn;
     private JButton AISloveBtn;
+    private JButton upBtn;
+    private JButton downBtn;
+    private JButton leftBtn;
+    private JButton rightBtn;
 
     private JLabel stepLabel;
     private GamePanel gamePanel;
@@ -41,6 +46,10 @@ public class GameFrame extends JFrame {
         this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
         this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
         this.AISloveBtn = FrameUtil.createButton(this,"AI Solver", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
+        this.upBtn = FrameUtil.createButton(this,"↑", new Point(gamePanel.getWidth() + 110, 360), 30, 30);
+        this.downBtn = FrameUtil.createButton(this,"↓", new Point(gamePanel.getWidth() + 110, 390), 30, 30);
+        this.leftBtn = FrameUtil.createButton(this,"←", new Point(gamePanel.getWidth() + 80, 390), 30, 30);
+        this.rightBtn = FrameUtil.createButton(this,"→", new Point(gamePanel.getWidth() + 140, 390), 30, 30);
         this.stepLabel = FrameUtil.createJLabel(this, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50);
         gamePanel.setStepLabel(stepLabel);
 
@@ -57,10 +66,31 @@ public class GameFrame extends JFrame {
             gamePanel.requestFocusInWindow();//enable key listener
         });
         this.AISloveBtn.addActionListener(e -> {
-            controller.AISolve();
             gamePanel.requestFocusInWindow();
-            //todo:写一个单独的窗体输出结果
+            try {
+                AIFrame aiFrame = new AIFrame(600,450, controller.AISolve());
+                aiFrame.setVisible(true);
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
+        this.upBtn.addActionListener(e -> {
+            gamePanel.doMoveUp();
+            gamePanel.afterMove();
+        });
+        this.downBtn.addActionListener(e -> {
+            gamePanel.doMoveDown();
+            gamePanel.afterMove();
+        });
+        this.leftBtn.addActionListener(e -> {
+            gamePanel.doMoveLeft();
+            gamePanel.afterMove();
+        });
+        this.rightBtn.addActionListener(e -> {
+            gamePanel.doMoveRight();
+            gamePanel.afterMove();
+        });
+
         //todo: add other button here
 
         this.setLocationRelativeTo(null);

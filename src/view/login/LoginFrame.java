@@ -114,4 +114,8 @@ public class LoginFrame extends JFrame {
     public void setLevelFrame(LevelFrame levelFrame) {
         this.levelFrame = levelFrame;
     }
+
+    public String getUserName(){
+        return this.username.getText();
+    }
 }

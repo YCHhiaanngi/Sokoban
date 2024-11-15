@@ -118,9 +118,8 @@ public class GameController {
 
     //todo: add other methods such as loadGame, saveGame...
 
-    public void AISolve(){//调用aiSolve方法生成最佳路径
-        System.out.println("Path: "+aiSolve(model.getMatrix()).getPath());
-        System.out.println("Length: "+aiSolve(model.getMatrix()).getLength());
+    public AIResult AISolve(){//调用aiSolve方法生成最佳路径
+        return aiSolve(model.getMatrix());
     }
 
 
@@ -194,14 +193,17 @@ public class GameController {
     public boolean isLose(){//辅助方法：判断是否失败
         int[][] grid = model.getMatrix();
         int sum = 0;
+        int sum1 = 0;
+        int sum2 = 0;
         for (int i = 1; i < model.getHeight()-1; i++) {
             for (int j = 1; j < model.getWidth()-1; j++) {
-                if(grid[i][j] == 10){//检测是否可以前往上下左右中的任意方向。
+                if(grid[i][j] == 10 || grid[i][j] == 12){//检测是否可以前往上下左右中的任意方向。
                     // 可以被推动需要同时满足两个条件：一侧有空位或者玩家或者目标点并且对侧是空位或者目标点或者玩家
+                    sum1++;
                     System.out.println(i+" "+j);
                     if((grid[i-1][j] == 0 || grid[i-1][j]/10 == 2 || grid[i-1][j] == 2) && (grid[i+1][j] == 0 || grid[i+1][j]/10 == 2 || grid[i+1][j] == 2)){
                         sum++;
-                        System.out.println(true);
+//                        System.out.println(true);
                     }
 //                    if((grid[i+1][j] == 0 || grid[i+1][j]/10 == 2 || grid[i+1][j] == 2) && (grid[i-1][j] == 0 || grid[i-1][j]/10 == 2) || grid[i-1][j] == 2){
 //                        sum++;
@@ -209,20 +211,25 @@ public class GameController {
 //                    }
                     if((grid[i][j-1] == 0 || grid[i][j-1]/10 == 2 || grid[i][j-1] == 2) && (grid[i][j+1] == 0 || grid[i][j+1]/10 == 2 || grid[i][j+1] == 2)){
                         sum++;
-                        System.out.println(true);
+//                        System.out.println(true);
                     }
 //                    if((grid[i][j+1] == 0 || grid[i][j+1]/10 == 2 || grid[i][j+1] == 2) && (grid[i][j-1] == 0 || grid[i][j-1]/10 == 2)){
 //                        sum++;
 //                        System.out.println(true);
 //                    }
                     if(sum == 0){
-                        return true;
+                        sum2++;
                     }
                     sum = 0;
                 }
             }
         }
+        if(sum1 == sum2){
+            return true;
+        }
         return false;
+
+
     }
 
 }
