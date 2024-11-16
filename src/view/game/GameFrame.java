@@ -28,7 +28,8 @@ public class GameFrame extends JFrame {
     private JButton leftBtn;
     private JButton rightBtn;
     private JButton progressBtn;
-    private JButton selectBtn;
+    private JButton quitBtn;
+    private JButton undoBtn;
 
     private JLabel stepLabel;
     private GamePanel gamePanel;
@@ -45,13 +46,13 @@ public class GameFrame extends JFrame {
         gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2);
         this.add(gamePanel);
         this.controller = new GameController(gamePanel, mapMatrix);
-
         this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
-        this.selectBtn = FrameUtil.createButton(this, "Select Levels", new Point(gamePanel.getWidth() + 160, 120), 80, 50);
+        this.quitBtn = FrameUtil.createButton(this, "Quit", new Point(gamePanel.getWidth() + 160, 120), 80, 50);
         this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
         this.progressBtn = FrameUtil.createButton(this, "Get Previous Progress", new Point(gamePanel.getWidth() + 160, 210), 80, 50);
         this.AISloveBtn = FrameUtil.createButton(this,"AI Solver", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
         this.saveBtn = FrameUtil.createButton(this,"Save", new Point(gamePanel.getWidth() + 160, 300), 80, 50);
+        this.undoBtn = FrameUtil.createButton(this,"Undo",new Point(gamePanel.getWidth() + 240 , 300), 80, 50);
         this.upBtn = FrameUtil.createButton(this,"↑", new Point(gamePanel.getWidth() + 110, 360), 30, 30);
         this.downBtn = FrameUtil.createButton(this,"↓", new Point(gamePanel.getWidth() + 110, 390), 30, 30);
         this.leftBtn = FrameUtil.createButton(this,"←", new Point(gamePanel.getWidth() + 80, 390), 30, 30);
@@ -107,13 +108,19 @@ public class GameFrame extends JFrame {
         });
         this.progressBtn.addActionListener(e ->{
             controller.loadProgress();
-            this.stepLabel.setText("New Start");
+            stepLabel.setText(String.format("Step: %d", gamePanel.getCurrentStep()));
             gamePanel.requestFocusInWindow();
         });
-        this.selectBtn.addActionListener(e ->{
+        this.quitBtn.addActionListener(e ->{
             this.setVisible(false);
             LevelFrame levelFrame = new LevelFrame(500,200);
             levelFrame.setVisible(true);
+        });
+        this.undoBtn.addActionListener(e -> {
+            controller.undo();
+            stepLabel.setText(String.format("Step: %d", gamePanel.getCurrentStep()));
+            gamePanel.requestFocusInWindow();
+            System.out.println("undo");
         });
 
         //todo: add other button here

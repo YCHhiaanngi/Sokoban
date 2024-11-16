@@ -5,7 +5,11 @@ import view.level.LevelFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 
 public class LoginFrame extends JFrame {
@@ -17,24 +21,73 @@ public class LoginFrame extends JFrame {
     private JButton guestBtn;
     private LevelFrame levelFrame;
     private static int count;
+    private JButton ChooseDaytime;
+    private JButton ChooseNight;
+    private BufferedImage backgroundImage;
+    private JLabel messageLabel;
     private static String userName;
     private static String passWord;
+    private JPanel messagePanel;
 
 
     public LoginFrame(int width, int height) {
         this.setTitle("Login Frame");
         this.setLayout(null);
-        this.setSize(width, height);
-        JLabel userLabel = FrameUtil.createJLabel(this, new Point(50, 20), 70, 40, "username:");
-        JLabel passLabel = FrameUtil.createJLabel(this, new Point(50, 80), 70, 40, "password:");
-        username = FrameUtil.createJTextField(this, new Point(120, 20), 120, 40);
-        password = FrameUtil.createJTextField(this, new Point(120, 80), 120, 40);
+        this.setSize(600, 400);
+        try {
+            backgroundImage = ImageIO.read(new File("img/login.jpg"));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load background image", e);
+        }
+        view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(backgroundImage);
+        this.setContentPane(backgroundPanel);
+        this.setLayout(null);
 
-        submitBtn = FrameUtil.createButton(this, "Confirm", new Point(40, 140), 100, 40);
-        resetBtn = FrameUtil.createButton(this, "Reset", new Point(160, 140), 100, 40);
-        signinBtn = FrameUtil.createButton(this, "Sign in", new Point(40, 200), 100, 40);
-        guestBtn = FrameUtil.createButton(this, "Guest Mode", new Point(160, 200), 100, 40);
+        JLabel userLabel = FrameUtil.createJLabel(this, new Point(680, 300), 70, 40, "username:");
+        JLabel passLabel = FrameUtil.createJLabel(this, new Point(680, 400), 70, 40, "password:");
+        username = FrameUtil.createJTextField(this, new Point(750, 300), 120, 40);
+        password = FrameUtil.createJTextField(this, new Point(750, 400), 120, 40);
 
+        submitBtn = FrameUtil.createButton(this, "Confirm", new Point(540, 310), 100, 40);
+        resetBtn = FrameUtil.createButton(this, "Reset", new Point(950, 310), 100, 40);
+        signinBtn = FrameUtil.createButton(this, "Sign in", new Point(570, 400), 100, 40);
+        guestBtn = FrameUtil.createButton(this, "Guest Mode", new Point(920, 400), 100, 40);
+        ChooseDaytime = FrameUtil.createButton(this, "Daytime", new Point(610, 490), 100, 40);
+        ChooseNight = FrameUtil.createButton(this, "Night",new Point(890, 490), 100, 40);
+
+        messagePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                g.setColor(getBackground());
+                g.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        messagePanel.setBounds(610, 600, 400, 50);
+        messagePanel.setLayout(new BorderLayout());
+
+
+        messageLabel = new JLabel();
+        messageLabel.setForeground(Color.BLACK);
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        messagePanel.add(messageLabel, BorderLayout.CENTER);
+        messagePanel.setBorder(BorderFactory.createEmptyBorder());
+        messagePanel.setOpaque(false);
+
+        this.add(messagePanel);
+
+        PropertyChangeListener propertyChangeListener = (PropertyChangeEvent evt) -> {
+            if ("text".equals(evt.getPropertyName())) {
+                String text = (String) evt.getNewValue();
+                if (text != null && !text.isEmpty()) {
+                    messagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+                    messagePanel.setBackground(new Color(211, 211, 211, 128));
+                } else {
+                    messagePanel.setBorder(BorderFactory.createEmptyBorder());
+                    messagePanel.setBackground(new Color(0, 0, 100, 0));
+                }
+            }
+        };//todo:目前还不知道为什么底部框不能跟随字出现而出现
         submitBtn.addActionListener(e -> {
 
             System.out.println("Username = " + username.getText());
@@ -49,7 +102,7 @@ public class LoginFrame extends JFrame {
                         BufferedReader bReader = new BufferedReader(reader);
                         String line = bReader.readLine();
                         if(line.equals(password.getText())){
-                            System.out.println("Password Correct");
+                            messageLabel.setText("Password Correct");
                             userName = username.getText();
                             passWord = password.getText();
                             if (this.levelFrame != null) {
@@ -57,14 +110,15 @@ public class LoginFrame extends JFrame {
                                 this.setVisible(false);
                             }
                         }else{
-                            System.out.println("Password incorrect.\n" +
-                                    "Please Check your username and password");
+                            messageLabel.setText("Password incorrect.\n" +
+                                    " Please check your username and password.");
+                            return;
                         }
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
                 }else{
-                    System.out.println("You have not register yet.");
+                    messageLabel.setText("You have not registered yet.");
                 }
             }
 
@@ -81,18 +135,18 @@ public class LoginFrame extends JFrame {
 
         signinBtn.addActionListener(e -> {
             if(username.getText().isEmpty() || password.getText().isEmpty()){
-                System.out.println("Please input your name and password first!");
+                messageLabel.setText("Please input your name and password first!");
             }else {
                 String fileName = "userfile/"+ username.getText() + ".txt";
                 File file = new File(fileName);
                 if (file.exists()) {
-                    System.out.println("User already exists! Please login");
+                    messageLabel.setText("User already exists! Please login");
                     username.setText("");
                     password.setText("");
                 } else {
                     try {
                         if (file.createNewFile()) {
-                            System.out.println("New User Created");
+                            messageLabel.setText("New User Created");
                             FileWriter writer = new FileWriter(fileName);
                             BufferedWriter output = new BufferedWriter(writer);
                             output.write(password.getText()+"\n");

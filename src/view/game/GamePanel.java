@@ -113,7 +113,14 @@ public class GamePanel extends ListenerPanel {
         this.stepLabel = stepLabel;
     }
 
+    public int getCurrentStep(){
+        return steps;
+    }
 
+    public void setCurrentStep(int steps){
+        this.steps = steps;
+//        System.out.println(this.steps);
+    }
 
     public void setController(GameController controller) {
         this.controller = controller;
