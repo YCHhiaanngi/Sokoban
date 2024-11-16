@@ -7,9 +7,7 @@ import view.lose.LoseFrame;
 import view.win.WinFrame;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static view.game.AISolver.aiSolve;
 import static view.level.LevelFrame.getCurrentLevel;
@@ -28,12 +26,16 @@ public class GameController {
     private WinFrame winFrame;
     private LoseFrame loseFrame;
 
+    private Stack<int[][]> track;//后进先出，用栈存储游戏记录以实现撤销功能
+
     public GameController(GamePanel view, MapMatrix model) throws FileNotFoundException {
         this.view = view;
         this.model = model;
+        this.track = new Stack<>();
+        int[][] grid = deepCopy(model.getMatrix());
+        track.push(grid);
         view.setController(this);
     }
-
 
     public void restartGame() {//重新开始（关卡模式）
         File file = new File("map/Level"+getCurrentLevel()+".txt");//从同关卡的初始文件中覆盖当前的MapMatrix
@@ -67,7 +69,7 @@ public class GameController {
             File file = new File(path);//载入文件
             int[][] map = readArray(file,0);
             model.setMatrix(map);
-            loadLevelFrame = new LoadLevelFrame(600,450,model,path);//创建新loadLevel窗口
+            loadLevelFrame = new LoadLevelFrame(2000,1000,model,path);//创建新loadLevel窗口
             loadLevelFrame.setVisible(true);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -86,6 +88,7 @@ public class GameController {
             sb.append(getPassword()).append("\n");
             System.out.println(getUserName());
             sb.append(getCurrentLevel()).append("\n");
+            sb.append(view.getCurrentStep()).append("\n");
             for (int i = 0; i < model.getHeight(); i++) {
                 for (int j = 0; j < model.getWidth()-1; j++) {
                     sb.append(model.getMatrix()[i][j]).append(" ");
@@ -105,6 +108,7 @@ public class GameController {
         String userName = getUserName();
         String path = "userfile/" + userName + ".txt";
         File file = new File(path);
+        int currentStep;
         try {
             FileReader reader = new FileReader(file);
             BufferedReader br = new BufferedReader(reader);
@@ -112,20 +116,49 @@ public class GameController {
             br.readLine();//第一行是密码，不要读
             int previousLevel = Integer.parseInt(br.readLine());//第二行是上次保存时的关卡
             if(getCurrentLevel() == previousLevel){
-                map = readArray(file,3);//第3行开始读取关卡数据
+                currentStep = Integer.parseInt(br.readLine());//第三行是上一次保存时的步数
+                map = readArray(file,4);//第4行开始读取关卡数据
                 System.out.println("Previous progress loaded.");
-            }else {
-                System.out.println("You don't have any progress in this level.");
-            }
-            if(map!=null) {
                 view.removeAll();
                 model.setMatrix(map);
                 view.initialGame();
+                view.setCurrentStep(currentStep);
+            }else {
+                System.out.println("You don't have any progress in this level.");
             }
+
             br.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void undo(){
+        //重置地图
+        if(track.isEmpty()){
+            System.out.println("empty");
+        }else {
+            view.removeAll();
+            int[][] grid = track.pop();
+            model.setMatrix(grid);
+//            for (int i = 0; i < grid.length; i++) {
+//                for (int j = 0; j < grid[0].length; j++) {
+//                    System.out.print(grid[i][j] + " ");
+//                }
+//                System.out.println();
+//            }
+            int step = view.getCurrentStep();//因为initialGame()方法会将step重置为0，所以要将当前步骤事先存储起来
+            view.initialGame();
+            view.setCurrentStep(step-1);
+        }
+    }
+
+    private int[][] deepCopy(int[][] original) {//辅助方法：深度复制二维数组的值
+        int[][] copy = new int[original.length][];
+        for (int i = 0; i < original.length; i++) {
+            copy[i] = original[i].clone();
+        }
+        return copy;
     }
 
 
@@ -139,7 +172,7 @@ public class GameController {
         GridComponent targetGrid = view.getGridComponent(tRow, tCol);
         GridComponent boxGrid = view.getGridComponent(bRow, bCol);
         int[][] map = model.getMatrix();
-
+        int[][] grid = deepCopy(map);
         if (map[tRow][tCol] == 0 || map[tRow][tCol] == 2) {
             //update hero in MapMatrix
             model.getMatrix()[row][col] -= 20;
@@ -150,6 +183,8 @@ public class GameController {
             //Update the row and column attribute in hero
             h.setRow(tRow);
             h.setCol(tCol);
+            //先复制，再将地图数据压入栈
+            track.push(grid);
 
             return true;
         }
@@ -166,6 +201,8 @@ public class GameController {
 
             Box box = targetGrid.removeBoxFromGrid();
             boxGrid.setBoxInGrid(box);
+
+            track.push(grid);
 
             try {
                 if (isWin()) {
