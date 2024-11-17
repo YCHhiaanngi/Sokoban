@@ -8,6 +8,9 @@ import view.win.WinFrame;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static view.game.AISolver.aiSolve;
 import static view.level.LevelFrame.getCurrentLevel;
@@ -34,6 +37,11 @@ public class GameController {
         this.track = new Stack<>();
         int[][] grid = deepCopy(model.getMatrix());
         track.push(grid);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        Runnable task = () -> {
+            saveGame();
+        };
+        scheduler.scheduleAtFixedRate(task,0,1, TimeUnit.MINUTES);//每1分钟自动保存
         view.setController(this);
     }
 

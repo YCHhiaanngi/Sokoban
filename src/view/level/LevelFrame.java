@@ -12,20 +12,30 @@ import java.io.FileNotFoundException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import static view.login.LoginFrame.isDayTheme;
+
 public class LevelFrame extends JFrame {
 
     private BufferedImage levelImage;
     private static int currentLevel;
 
     public LevelFrame(int width, int height) {
-        this.setTitle("Level");
+        this.setTitle("Select Level");
         this.setLayout(null);
         this.setSize(width, height);
     //todo:定义一个boolean，if（green）则level-green，else level-night
-        try {
-           levelImage = ImageIO.read(new File("img/level-green.jpg"));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load  level image", e);
+        if(isDayTheme) {
+            try {
+                levelImage = ImageIO.read(new File("img/level-green.jpg"));
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load  level image", e);
+            }
+        }else{
+            try {
+                levelImage = ImageIO.read(new File("img/level-night.jpg"));
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load  level image", e);
+            }
         }
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(levelImage);
         this.setContentPane(backgroundPanel);

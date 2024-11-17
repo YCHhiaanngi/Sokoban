@@ -21,13 +21,16 @@ public class LoginFrame extends JFrame {
     private JButton guestBtn;
     private LevelFrame levelFrame;
     private static int count;
-    private JButton ChooseDaytime;
-    private JButton ChooseNight;
+    private JButton chooseDaytime;
+    private JButton chooseNight;
     private BufferedImage backgroundImage;
     private JLabel messageLabel;
     private static String userName;
     private static String passWord;
     private JPanel messagePanel;
+
+    public static boolean isDayTheme;
+    public static boolean isNightTheme;
 
 
     public LoginFrame(int width, int height) {
@@ -52,8 +55,8 @@ public class LoginFrame extends JFrame {
         resetBtn = FrameUtil.createButton(this, "Reset", new Point(950, 310), 100, 40);
         signinBtn = FrameUtil.createButton(this, "Sign in", new Point(570, 400), 100, 40);
         guestBtn = FrameUtil.createButton(this, "Guest Mode", new Point(920, 400), 100, 40);
-        ChooseDaytime = FrameUtil.createButton(this, "Daytime", new Point(610, 490), 100, 40);
-        ChooseNight = FrameUtil.createButton(this, "Night",new Point(890, 490), 100, 40);
+        chooseDaytime = FrameUtil.createButton(this, "Daytime", new Point(610, 490), 100, 40);
+        chooseNight = FrameUtil.createButton(this, "Night",new Point(890, 490), 100, 40);
 
         messagePanel = new JPanel() {
             @Override
@@ -117,10 +120,9 @@ public class LoginFrame extends JFrame {
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                }else{
-                    messageLabel.setText("You have not registered yet.");
                 }
             }
+            messageLabel.setText("You have not registered yet.");
 
 
             //todo:把这里的控制台输出改成JLabel输出，下面同理，可以改文字的内容
@@ -167,6 +169,17 @@ public class LoginFrame extends JFrame {
                 this.levelFrame.setVisible(true);
                 this.setVisible(false);
             }
+        });
+
+        this.chooseDaytime.addActionListener(e ->{
+            isDayTheme = true;
+            isNightTheme = false;
+            messageLabel.setText("You have chosen daytime theme");
+        });
+        this.chooseNight.addActionListener(e ->{
+            isDayTheme = false;
+            isNightTheme = true;
+            messageLabel.setText("You have chosen night theme");
         });
 
         this.setLocationRelativeTo(null);
