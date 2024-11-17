@@ -4,19 +4,33 @@ import model.MapMatrix;
 import view.FrameUtil;
 import view.game.GameFrame;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class LevelFrame extends JFrame {
 
-
+    private BufferedImage levelImage;
     private static int currentLevel;
 
     public LevelFrame(int width, int height) {
         this.setTitle("Level");
         this.setLayout(null);
         this.setSize(width, height);
+    //todo:定义一个boolean，if（green）则level-green，else level-night
+        try {
+           levelImage = ImageIO.read(new File("img/level-green.jpg"));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load  level image", e);
+        }
+        view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(levelImage);
+        this.setContentPane(backgroundPanel);
+        this.setLayout(null);
+
         JButton level1Btn = FrameUtil.createButton(this, "Level1", new Point(30, height / 2 - 50), 60, 60);
         JButton level2Btn = FrameUtil.createButton(this, "Level2", new Point(120, height / 2 - 50), 60, 60);
         JButton level3Btn = FrameUtil.createButton(this, "Level3", new Point(210, height / 2 - 50), 60, 60);
