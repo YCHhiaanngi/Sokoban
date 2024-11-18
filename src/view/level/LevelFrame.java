@@ -24,19 +24,19 @@ public class LevelFrame extends JFrame {
         this.setLayout(null);
         this.setSize(width, height);
     //todo:定义一个boolean，if（green）则level-green，else level-night
-        if(isDayTheme) {
-            try {
-                levelImage = ImageIO.read(new File("img/level-green.jpg"));
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to load  level image", e);
-            }
-        }else{
-            try {
-                levelImage = ImageIO.read(new File("img/level-night.jpg"));
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to load  level image", e);
-            }
-        }
+//        if(isDayTheme) {
+//            try {
+//                levelImage = ImageIO.read(new File("img/level-green.jpg"));
+//            } catch (IOException e) {
+//                throw new RuntimeException("Failed to load  level image", e);
+//            }
+//        }else{
+//            try {
+//                levelImage = ImageIO.read(new File("img/level-night.jpg"));
+//            } catch (IOException e) {
+//                throw new RuntimeException("Failed to load  level image", e);
+//            }
+//        }
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(levelImage);
         this.setContentPane(backgroundPanel);
         this.setLayout(null);

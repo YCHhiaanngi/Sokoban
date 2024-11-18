@@ -2,6 +2,7 @@ package view.game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
 import controller.GameController;
@@ -21,7 +22,7 @@ public class GameFrame extends JFrame {
     private GameController controller;
     private JButton restartBtn;
     private JButton loadBtn;
-    private JButton AISloveBtn;
+    private JButton AISolveBtn;
     private JButton saveBtn;
     private JButton upBtn;
     private JButton downBtn;
@@ -34,8 +35,6 @@ public class GameFrame extends JFrame {
     private JLabel stepLabel;
     private GamePanel gamePanel;
     private LoadLevelFrame loadLevelFrame;
-    private LoseFrame loseFrame;
-    private WinFrame winFrame;
 
 
     public GameFrame(int width, int height, MapMatrix mapMatrix) throws FileNotFoundException {
@@ -46,11 +45,12 @@ public class GameFrame extends JFrame {
         gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2);
         this.add(gamePanel);
         this.controller = new GameController(gamePanel, mapMatrix);
+
         this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
         this.quitBtn = FrameUtil.createButton(this, "Quit", new Point(gamePanel.getWidth() + 160, 120), 80, 50);
         this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
         this.progressBtn = FrameUtil.createButton(this, "Get Previous Progress", new Point(gamePanel.getWidth() + 160, 210), 80, 50);
-        this.AISloveBtn = FrameUtil.createButton(this,"AI Solver", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
+        this.AISolveBtn = FrameUtil.createButton(this,"AI Solver", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
         this.saveBtn = FrameUtil.createButton(this,"Save", new Point(gamePanel.getWidth() + 160, 300), 80, 50);
         this.undoBtn = FrameUtil.createButton(this,"Undo",new Point(gamePanel.getWidth() + 240 , 300), 80, 50);
         this.upBtn = FrameUtil.createButton(this,"↑", new Point(gamePanel.getWidth() + 110, 360), 30, 30);
@@ -77,7 +77,7 @@ public class GameFrame extends JFrame {
             this.setVisible(false);
             gamePanel.requestFocusInWindow();//enable key listener
         });
-        this.AISloveBtn.addActionListener(e -> {
+        this.AISolveBtn.addActionListener(e -> {
             gamePanel.requestFocusInWindow();
             try {
                 AIFrame aiFrame = new AIFrame(600,450, controller.AISolve());
@@ -113,6 +113,7 @@ public class GameFrame extends JFrame {
         });
         this.quitBtn.addActionListener(e ->{
             this.setVisible(false);
+            GameController.stopAutoSave();
             LevelFrame levelFrame = new LevelFrame(500,200);
             levelFrame.setVisible(true);
         });

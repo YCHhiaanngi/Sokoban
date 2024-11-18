@@ -34,7 +34,7 @@ public class LoginFrame extends JFrame {
 
 
     public LoginFrame(int width, int height) {
-        this.setTitle("Login Frame");
+        this.setTitle("Login");
         this.setLayout(null);
         this.setSize(600, 400);
         try {

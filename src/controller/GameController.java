@@ -6,7 +6,11 @@ import view.game.*;
 import view.lose.LoseFrame;
 import view.win.WinFrame;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 import static view.game.AISolver.aiSolve;
 import static view.level.LevelFrame.getCurrentLevel;
-import static view.level.LevelFrame.setCurrentLevel;
 import static view.login.LoginFrame.getUserName;
 import static view.login.LoginFrame.getPassword;
 
@@ -31,18 +34,38 @@ public class GameController {
 
     private Stack<int[][]> track;//后进先出，用栈存储游戏记录以实现撤销功能
 
+    private static ScheduledExecutorService scheduler;
+    private static Runnable task;
+
     public GameController(GamePanel view, MapMatrix model) throws FileNotFoundException {
         this.view = view;
         this.model = model;
         this.track = new Stack<>();
         int[][] grid = deepCopy(model.getMatrix());
         track.push(grid);
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        Runnable task = () -> {
-            saveGame();
-        };
-        scheduler.scheduleAtFixedRate(task,0,1, TimeUnit.MINUTES);//每1分钟自动保存
+        autoSave(60);//自动保存间隔为60秒
         view.setController(this);
+    }
+
+    // 启动定时任务
+    public static void autoSave(long intervalSeconds) {
+        scheduler = Executors.newSingleThreadScheduledExecutor();  // 创建单线程调度任务池
+        task = new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        };
+        // 每隔intervalSeconds秒执行一次任务
+        scheduler.scheduleAtFixedRate(task, 0, intervalSeconds, TimeUnit.SECONDS);
+    }
+
+    // 停止定时任务
+    public static void stopAutoSave() {
+        if (scheduler != null && !scheduler.isShutdown()) {
+            scheduler.shutdown();  // 停止调度器
+            System.out.println("定时任务已停止");
+        }
     }
 
     public void restartGame() {//重新开始（关卡模式）
@@ -56,6 +79,9 @@ public class GameController {
         view.removeAll();
         model.setMatrix(map);
         view.initialGame();
+        track.clear();
+        int[][] grid = deepCopy(model.getMatrix());
+        track.push(grid);
     }
 
     public void restartGame(String path) {//重新开始（自定义模式）
@@ -69,6 +95,9 @@ public class GameController {
         view.removeAll();
         model.setMatrix(map);
         view.initialGame();
+        track.clear();
+        int[][] grid = deepCopy(model.getMatrix());
+        track.push(grid);
     }
 
     public void loadGame(String path){//加载自定义关卡
@@ -143,7 +172,7 @@ public class GameController {
 
     public void undo(){
         //重置地图
-        if(track.isEmpty()){
+        if(track.size() == 1){
             System.out.println("empty");
         }else {
             view.removeAll();
