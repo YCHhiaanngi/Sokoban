@@ -123,10 +123,6 @@ public class LoginFrame extends JFrame {
             }
 
 
-            //todo:把这里的控制台输出改成JLabel输出，下面同理，可以改文字的内容
-
-
-
         });
         resetBtn.addActionListener(e -> {
             username.setText("");
