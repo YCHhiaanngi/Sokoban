@@ -36,7 +36,7 @@ public class LoginFrame extends JFrame {
     public LoginFrame(int width, int height) {
         this.setTitle("Login Frame");
         this.setLayout(null);
-        this.setSize(600, 400);
+        this.setSize(1800, 800);
         try {
             backgroundImage = ImageIO.read(new File("img/login.jpg"));
         } catch (IOException e) {
