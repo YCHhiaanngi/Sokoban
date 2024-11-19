@@ -36,7 +36,7 @@ public class LoginFrame extends JFrame {
     public LoginFrame(int width, int height) {
         this.setTitle("Login");
         this.setLayout(null);
-        this.setSize(600, 400);
+        this.setSize(1900, 900);
         try {
             backgroundImage = ImageIO.read(new File("img/login.jpg"));
         } catch (IOException e) {
@@ -124,7 +124,6 @@ public class LoginFrame extends JFrame {
             messageLabel.setText("You have not registered yet.");
 
 
-            //todo:把这里的控制台输出改成JLabel输出，下面同理，可以改文字的内容
 
 
 

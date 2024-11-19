@@ -1,5 +1,7 @@
 package view.game;
 
+import view.login.LoginFrame;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -26,13 +28,24 @@ public class GridComponent extends JComponent {
     BufferedImage[] image = new BufferedImage[3];
 
     {
-        try {
-            image[0] = ImageIO.read(new File("img/empty.png"));
-            image[1] = ImageIO.read(new File("img/wall.png"));
-            image[2] = ImageIO.read(new File("img/goal.png"));
+        if(LoginFrame.isDayTheme) {
+            try {
+                image[0] = ImageIO.read(new File("img/empty.png"));
+                image[1] = ImageIO.read(new File("img/barrier.jpg"));
+                image[2] = ImageIO.read(new File("img/goal.jpg"));
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            try {
+                image[0] = ImageIO.read(new File("img/empty-night.jpg"));
+                image[1] = ImageIO.read(new File("img/barrier-night.jpg"));
+                image[2] = ImageIO.read(new File("img/goal-night.jpg"));
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

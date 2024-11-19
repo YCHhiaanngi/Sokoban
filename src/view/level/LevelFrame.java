@@ -23,7 +23,7 @@ public class LevelFrame extends JFrame {
     public LevelFrame(int width, int height) {
         this.setTitle("Select Level");
         this.setLayout(null);
-        this.setSize(width, height);
+        this.setSize(2000, 900);
     //todo:定义一个boolean，if（green）则level-green，else level-night
         if(isDayTheme) {
             try {
@@ -42,11 +42,11 @@ public class LevelFrame extends JFrame {
         this.setContentPane(backgroundPanel);
         this.setLayout(null);
 
-        JButton level1Btn = FrameUtil.createButton(this, "Level1", new Point(30, height / 2 - 50), 60, 60);
-        JButton level2Btn = FrameUtil.createButton(this, "Level2", new Point(120, height / 2 - 50), 60, 60);
-        JButton level3Btn = FrameUtil.createButton(this, "Level3", new Point(210, height / 2 - 50), 60, 60);
-        JButton level4Btn = FrameUtil.createButton(this, "Level4", new Point(300, height / 2 - 50), 60, 60);
-        JButton level5Btn = FrameUtil.createButton(this, "Level5", new Point(390, height / 2 - 50), 60, 60);
+        JButton level1Btn = FrameUtil.createButton(this, "Level1", new Point(150, height / 2 - 50), 600, 100);
+        JButton level2Btn = FrameUtil.createButton(this, "Level2", new Point(150, height / 2 - 50+150), 600, 100);
+        JButton level3Btn = FrameUtil.createButton(this, "Level3", new Point(150, height / 2 - 50+300), 600, 100);
+        JButton level4Btn = FrameUtil.createButton(this, "Level4", new Point(150, height / 2 - 50+450), 600, 100);
+        JButton level5Btn = FrameUtil.createButton(this, "Level5", new Point(150, height / 2 - 50+600), 600, 100);
         level1Btn.addActionListener(l->{
             MapMatrix mapMatrix = new MapMatrix(new int[][]{
                     {1, 1, 1, 1, 1, 1},

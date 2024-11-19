@@ -22,7 +22,7 @@ public class GamePanel extends ListenerPanel {
     private GameController controller;
     private JLabel stepLabel;
     private int steps;
-    private final int GRID_SIZE = 50;
+    private final int GRID_SIZE = 115;
 
     private Hero hero;
 

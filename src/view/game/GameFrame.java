@@ -41,9 +41,9 @@ public class GameFrame extends JFrame {
     public GameFrame(int width, int height, MapMatrix mapMatrix) throws FileNotFoundException {
         this.setTitle("Sokoban   Level:"+getCurrentLevel());
         this.setLayout(null);
-        this.setSize(width, height);
+        this.setSize(2000, 900);
         gamePanel = new GamePanel(mapMatrix);
-        gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2);
+        gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2+185);
         this.add(gamePanel);
         this.controller = new GameController(gamePanel, mapMatrix);
 
