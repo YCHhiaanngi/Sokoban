@@ -97,7 +97,7 @@ public class GameController {
             loadLevelFrame = new LoadLevelFrame(2000,1000,model,path);//创建新loadLevel窗口
             loadLevelFrame.setVisible(true);
             stopAutoSave();//停止自动保存
-        } catch (IOException e) {
+        } catch (Exception e) {
             ErrorFrame errorFrame = new ErrorFrame(500,200,"Map file not found");
             errorFrame.setVisible(true);
         }

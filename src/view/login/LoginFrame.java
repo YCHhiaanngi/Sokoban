@@ -108,10 +108,9 @@ public class LoginFrame extends JFrame {
                             messageLabel.setText("Password Correct");
                             userName = username.getText();
                             passWord = password.getText();
-                            if (this.levelFrame != null) {
-                                this.levelFrame.setVisible(true);
-                                this.setVisible(false);
-                            }
+                            this.setVisible(false);
+                            LevelFrame levelFrame = new LevelFrame(500,200);
+                            levelFrame.setVisible(true);
                         }else{
                             messageLabel.setText("Password incorrect.\n" +
                                     " Please check your username and password.");
@@ -165,10 +164,9 @@ public class LoginFrame extends JFrame {
         guestBtn.addActionListener(e -> {
             username.setText("");
             password.setText("");
-            if (this.levelFrame != null) {
-                this.levelFrame.setVisible(true);
-                this.setVisible(false);
-            }
+            this.setVisible(false);
+            LevelFrame levelFrame = new LevelFrame(500,200);
+            levelFrame.setVisible(true);
         });
 
         this.chooseDaytime.addActionListener(e ->{

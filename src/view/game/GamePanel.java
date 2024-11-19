@@ -1,15 +1,15 @@
 package view.game;
 
 import controller.GameController;
+import error.ErrorFrame;
 import model.Direction;
 import model.MapMatrix;
 
-import javax.imageio.ImageIO;
+
 import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
+
+import static view.game.Hero.heroDirection;
+
 
 /**
  * It is the subclass of ListenerPanel, so that it should implement those four methods: do move left, up, down ,right.
@@ -68,7 +68,8 @@ public class GamePanel extends ListenerPanel {
                 }
             }
         }catch (ArrayIndexOutOfBoundsException e){
-            System.out.print("数组越界");
+            ErrorFrame errorFrame = new ErrorFrame(500,200,"Array index out of bounds");
+            errorFrame.setVisible(true);
         }
         this.repaint();
     }
@@ -79,6 +80,7 @@ public class GamePanel extends ListenerPanel {
         if (controller.doMove(hero.getRow(), hero.getCol(), Direction.RIGHT)) {
             this.afterMove();
         }
+        heroDirection = Direction.RIGHT;
     }
 
     @Override
@@ -87,6 +89,7 @@ public class GamePanel extends ListenerPanel {
         if(controller.doMove(hero.getRow(), hero.getCol(), Direction.LEFT)){
             this.afterMove();
         }
+        heroDirection = Direction.LEFT;
     }
 
     @Override
@@ -95,6 +98,7 @@ public class GamePanel extends ListenerPanel {
        if( controller.doMove(hero.getRow(), hero.getCol(), Direction.UP)){
            this.afterMove();
        }
+       heroDirection = Direction.UP;
     }
 
     @Override
@@ -103,6 +107,7 @@ public class GamePanel extends ListenerPanel {
         if(controller.doMove(hero.getRow(), hero.getCol(), Direction.DOWN)){
             this.afterMove();
         }
+        heroDirection = Direction.DOWN;
     }
 
     public void afterMove() {
