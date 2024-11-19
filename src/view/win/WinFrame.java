@@ -15,7 +15,7 @@ public class WinFrame extends JFrame{
     private JButton okBtn;
 
     //todo:调整窗口、标签的大小
-    public WinFrame(int width, int height, int currentLevel) throws FileNotFoundException {
+    public WinFrame(int width, int height, int currentLevel)  {
         this.setTitle("You have passed Level " + currentLevel + "!");
         this.setLayout(null);
         this.setSize(width, height);

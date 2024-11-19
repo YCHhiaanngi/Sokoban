@@ -50,7 +50,14 @@ public class GamePanel extends ListenerPanel {
                     //Ten digit maps to Box or Hero in corresponding location in the GridComponent. (Changed value)
                     switch (model.getId(i, j) / 10) {
                         case 1:
-                            grids[i][j].setBoxInGrid(new Box(GRID_SIZE - 10, GRID_SIZE - 10));
+                            Box box = new Box(GRID_SIZE - 10, GRID_SIZE - 10);
+                            if(model.getId(i,j) == 10){
+                                box.setOnGoal(false);
+                            }
+                            if(model.getId(i,j) == 12){
+                                box.setOnGoal(true);
+                            }
+                            grids[i][j].setBoxInGrid(box);
                             break;
                         case 2:
                             this.hero = new Hero(GRID_SIZE - 16, GRID_SIZE - 16, i, j);

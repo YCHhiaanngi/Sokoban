@@ -1,3 +1,4 @@
+import error.ErrorFrame;
 import view.level.LevelFrame;
 import view.login.LoginFrame;
 
@@ -6,6 +7,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Main {
 
@@ -30,7 +32,8 @@ public class Main {
             clip.start();
             audioStream.close();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            ErrorFrame errorFrame = new ErrorFrame(500,200,"Music file not found");
+            errorFrame.setVisible(true);
         }
     }
 }

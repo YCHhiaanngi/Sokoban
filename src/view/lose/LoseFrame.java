@@ -16,7 +16,7 @@ public class LoseFrame extends JFrame {
     private JLabel loseMsg;
     private JButton okBtn;
 
-    public LoseFrame(int width, int height, int currentLevel) throws FileNotFoundException {
+    public LoseFrame(int width, int height, int currentLevel)  {
         this.setTitle("You Lose in Level "+currentLevel);
         this.setLayout(null);
         this.setSize(width, height);

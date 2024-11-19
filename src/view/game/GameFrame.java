@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
 import controller.GameController;
+import error.ErrorFrame;
 import model.MapMatrix;
 import view.FrameUtil;
 import view.ai.AIFrame;
@@ -63,6 +64,8 @@ public class GameFrame extends JFrame {
         if(getUserName() == null){
             saveBtn.setEnabled(false);
             progressBtn.setEnabled(false);
+        }else{
+            controller.autoSave(60);//每隔60秒自动保存
         }
 
         this.restartBtn.addActionListener(e -> {

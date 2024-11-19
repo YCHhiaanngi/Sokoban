@@ -66,22 +66,22 @@ public class LoadLevelFrame extends JFrame {
                 throw new RuntimeException(ex);
             }
         });
-//        this.upBtn.addActionListener(e -> {
-//            gamePanel.doMoveUp();
-//            gamePanel.requestFocusInWindow();
-//        });
-//        this.downBtn.addActionListener(e -> {
-//            gamePanel.doMoveDown();
-//            gamePanel.requestFocusInWindow();
-//        });
-//        this.leftBtn.addActionListener(e -> {
-//            gamePanel.doMoveLeft();
-//            gamePanel.requestFocusInWindow();
-//        });
-//        this.rightBtn.addActionListener(e -> {
-//            gamePanel.doMoveRight();
-//            gamePanel.requestFocusInWindow();
-//        });
+        this.upBtn.addActionListener(e -> {
+            gamePanel.doMoveUp();
+            gamePanel.requestFocusInWindow();
+        });
+        this.downBtn.addActionListener(e -> {
+            gamePanel.doMoveDown();
+            gamePanel.requestFocusInWindow();
+        });
+        this.leftBtn.addActionListener(e -> {
+            gamePanel.doMoveLeft();
+            gamePanel.requestFocusInWindow();
+        });
+        this.rightBtn.addActionListener(e -> {
+            gamePanel.doMoveRight();
+            gamePanel.requestFocusInWindow();
+        });
         this.undoBtn.addActionListener(e -> {
             controller.undo();
             stepLabel.setText(String.format("Step: %d", gamePanel.getCurrentStep()));

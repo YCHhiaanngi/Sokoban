@@ -1,16 +1,13 @@
 package controller;
 
+import error.ErrorFrame;
 import model.Direction;
 import model.MapMatrix;
 import view.game.*;
 import view.lose.LoseFrame;
 import view.win.WinFrame;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -43,17 +40,16 @@ public class GameController {
         this.track = new Stack<>();
         int[][] grid = deepCopy(model.getMatrix());
         track.push(grid);
-        autoSave(60);//自动保存间隔为60秒
         view.setController(this);
     }
 
     // 启动定时任务
-    public static void autoSave(long intervalSeconds) {
+    public void autoSave(long intervalSeconds) {
         scheduler = Executors.newSingleThreadScheduledExecutor();  // 创建单线程调度任务池
         task = new Runnable() {
             @Override
             public void run() {
-
+                saveGame();
             }
         };
         // 每隔intervalSeconds秒执行一次任务
@@ -71,11 +67,7 @@ public class GameController {
     public void restartGame() {//重新开始（关卡模式）
         File file = new File("map/Level"+getCurrentLevel()+".txt");//从同关卡的初始文件中覆盖当前的MapMatrix
         int[][] map = null;
-        try {
-            map = readArray(file,0);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        map = readArray(file,0);
         view.removeAll();
         model.setMatrix(map);
         view.initialGame();
@@ -87,11 +79,7 @@ public class GameController {
     public void restartGame(String path) {//重新开始（自定义模式）
         File file = new File(path);//从path中加载关卡文件
         int[][] map = null;
-        try {
-            map = readArray(file,0);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        map = readArray(file,0);
         view.removeAll();
         model.setMatrix(map);
         view.initialGame();
@@ -108,8 +96,10 @@ public class GameController {
             model.setMatrix(map);
             loadLevelFrame = new LoadLevelFrame(2000,1000,model,path);//创建新loadLevel窗口
             loadLevelFrame.setVisible(true);
+            stopAutoSave();//停止自动保存
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorFrame errorFrame = new ErrorFrame(500,200,"Map file not found");
+            errorFrame.setVisible(true);
         }
 
     }
@@ -137,7 +127,8 @@ public class GameController {
             System.out.println(sb);
             bw.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorFrame errorFrame = new ErrorFrame(500,200,"Failed to save");
+            errorFrame.setVisible(true);
         }
     }
 
@@ -161,7 +152,8 @@ public class GameController {
                 view.initialGame();
                 view.setCurrentStep(currentStep);
             }else {
-                System.out.println("You don't have any progress in this level.");
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"You don't have any progress in this level.");
+                errorFrame.setVisible(true);
             }
 
             br.close();
@@ -173,7 +165,7 @@ public class GameController {
     public void undo(){
         //重置地图
         if(track.size() == 1){
-            System.out.println("empty");
+            ErrorFrame errorFrame = new ErrorFrame(500,200,"empty");
         }else {
             view.removeAll();
             int[][] grid = track.pop();
@@ -239,19 +231,22 @@ public class GameController {
             Box box = targetGrid.removeBoxFromGrid();
             boxGrid.setBoxInGrid(box);
 
+            if(model.getMatrix()[bRow][bCol] == 12){
+                box.setOnGoal(true);
+            }
+            if(model.getMatrix()[bRow][bCol] == 10){
+                box.setOnGoal(false);
+            }
+
             track.push(grid);
 
-            try {
-                if (isWin()) {
-                    winFrame = new WinFrame(600, 200, getCurrentLevel());
-                    winFrame.setVisible(true);
-                }
-                if (isLose() && !isWin()) {
-                    loseFrame = new LoseFrame(600, 200, getCurrentLevel());
-                    loseFrame.setVisible(true);
-                }
-            }catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+            if (isWin()) {
+                winFrame = new WinFrame(600, 200, getCurrentLevel());
+                winFrame.setVisible(true);
+            }
+            if (isLose() && !isWin()) {
+                loseFrame = new LoseFrame(600, 200, getCurrentLevel());
+                loseFrame.setVisible(true);
             }
 
             return true;
@@ -266,39 +261,42 @@ public class GameController {
         return aiSolve(model.getMatrix());
     }
 
-    public static int[][] readArray(File file, int from) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String line;
-        List<int[]> matrixList = new ArrayList<>();
-        int currentLine = 0;
+    public static int[][] readArray(File file, int from)  {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            List<int[]> matrixList = new ArrayList<>();
+            int currentLine = 0;
 
-        // 跳过前from行
-        while (currentLine < from - 1 && (line = reader.readLine()) != null) {
-            currentLine++;
-        }
-
-        // 开始读取
-        while ((line = reader.readLine()) != null) {
-            currentLine++;
-            // 分割并转化为int
-            String[] values = line.trim().split("\\s+");
-            int[] row = new int[values.length];
-            for (int i = 0; i < values.length; i++) {
-                row[i] = Integer.parseInt(values[i]);
+            // 跳过前from行
+            while (currentLine < from - 1 && (line = reader.readLine()) != null) {
+                currentLine++;
             }
-            matrixList.add(row);
+
+            // 开始读取
+            while ((line = reader.readLine()) != null) {
+                currentLine++;
+                // 分割并转化为int
+                String[] values = line.trim().split("\\s+");
+                int[] row = new int[values.length];
+                for (int i = 0; i < values.length; i++) {
+                    row[i] = Integer.parseInt(values[i]);
+                }
+                matrixList.add(row);
+            }
+
+            // 将List转化为二维数组
+            int[][] matrix = new int[matrixList.size()][];
+            for (int i = 0; i < matrixList.size(); i++) {
+                matrix[i] = matrixList.get(i);
+            }
+
+            // Close the BufferedReader
+            reader.close();
+            return matrix;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        // 将List转化为二维数组
-        int[][] matrix = new int[matrixList.size()][];
-        for (int i = 0; i < matrixList.size(); i++) {
-            matrix[i] = matrixList.get(i);
-        }
-
-        // Close the BufferedReader
-        reader.close();
-
-        return matrix;
     }
 
 //    public int countLine(File file) throws IOException {//辅助方法：数行数
@@ -359,7 +357,7 @@ public class GameController {
 //
 //    }
 
-    public boolean isWin() throws FileNotFoundException {//辅助方法：判定是否胜利
+    public boolean isWin(){//辅助方法：判定是否胜利
         int[][] grid = model.getMatrix();
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {

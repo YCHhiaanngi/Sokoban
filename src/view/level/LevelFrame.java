@@ -1,5 +1,6 @@
 package view.level;
 
+import error.ErrorFrame;
 import model.MapMatrix;
 import view.FrameUtil;
 import view.game.GameFrame;
@@ -59,10 +60,13 @@ public class LevelFrame extends JFrame {
             try {
                 gameFrame = new GameFrame(600, 450, mapMatrix);
             } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Game frame cannot be loaded");
+                errorFrame.setVisible(true);
             }
             this.setVisible(false);
-            gameFrame.setVisible(true);
+            if (gameFrame != null) {
+                gameFrame.setVisible(true);
+            }
         });
 
         level2Btn.addActionListener(l->{
@@ -79,10 +83,13 @@ public class LevelFrame extends JFrame {
             try {
                 gameFrame = new GameFrame(600, 450, mapMatrix);
             } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Game frame cannot be loaded");
+                errorFrame.setVisible(true);
             }
             this.setVisible(false);
-            gameFrame.setVisible(true);
+            if (gameFrame != null) {
+                gameFrame.setVisible(true);
+            }
         });
 
         level3Btn.addActionListener(l->{
@@ -100,10 +107,13 @@ public class LevelFrame extends JFrame {
             try {
                 gameFrame = new GameFrame(600, 450, mapMatrix);
             } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Game frame cannot be loaded");
+                errorFrame.setVisible(true);
             }
             this.setVisible(false);
-            gameFrame.setVisible(true);
+            if (gameFrame != null) {
+                gameFrame.setVisible(true);
+            }
         });
 
         level4Btn.addActionListener(l->{
@@ -121,10 +131,13 @@ public class LevelFrame extends JFrame {
             try {
                 gameFrame = new GameFrame(600, 450, mapMatrix);
             } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Game frame cannot be loaded");
+                errorFrame.setVisible(true);
             }
             this.setVisible(false);
-            gameFrame.setVisible(true);
+            if (gameFrame != null) {
+                gameFrame.setVisible(true);
+            }
         });
 
         level5Btn.addActionListener(l->{
@@ -141,10 +154,13 @@ public class LevelFrame extends JFrame {
             try {
                 gameFrame = new GameFrame(600, 450, mapMatrix);
             } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Game frame cannot be loaded");
+                errorFrame.setVisible(true);
             }
             this.setVisible(false);
-            gameFrame.setVisible(true);
+            if (gameFrame != null) {
+                gameFrame.setVisible(true);
+            }
         });
 
         this.setLocationRelativeTo(null);

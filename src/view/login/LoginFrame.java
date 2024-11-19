@@ -163,7 +163,7 @@ public class LoginFrame extends JFrame {
         });
 
         guestBtn.addActionListener(e -> {
-            username.setText("Guest");
+            username.setText("");
             password.setText("");
             if (this.levelFrame != null) {
                 this.levelFrame.setVisible(true);

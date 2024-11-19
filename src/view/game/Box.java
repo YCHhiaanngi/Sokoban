@@ -9,27 +9,43 @@ import java.io.*;
 
 public class Box extends JComponent {
     private final int value = 10;
+    private boolean isOnGoal;
 
     public Box(int width, int height) {
         this.setSize(width, height);
         this.setLocation(5, 5);
     }
 
-    BufferedImage image;
-
+    BufferedImage image1;
     {
         try {
-            image = ImageIO.read(new File("img/box.png"));
+            image1 = ImageIO.read(new File("img/box.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    BufferedImage image2;
+    {
+        try {
+            image2 = ImageIO.read(new File("img/boxongoal.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void paintComponent(Graphics g) {
-        g.drawImage(image,0,0,getWidth(),getHeight(),null);
+        if(!isOnGoal) {
+            g.drawImage(image1, 0, 0, getWidth(), getHeight(), null);
+        }else{
+            g.drawImage(image2,0,0,getWidth(),getHeight(),null);
+        }
     }
 
     public int getValue() {
         return value;
+    }
+
+    public void setOnGoal(boolean onGoal) {
+        isOnGoal = onGoal;
     }
 }
