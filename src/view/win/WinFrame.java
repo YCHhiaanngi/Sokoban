@@ -20,8 +20,8 @@ public class WinFrame extends JFrame{
         this.setLayout(null);
         this.setSize(width, height);
 
-        this.winMsg = FrameUtil.createJLabel(this,new Point(width/2,height/2),500,50,"You win! You can enter the next level.");
-        this.okBtn = FrameUtil.createButton(this,"OK",new Point(width/2+50,height/2+50),50,50);
+        this.winMsg = FrameUtil.createJLabel(this,new Point(200,20),500,50,"You win! You can enter the next level.");
+        this.okBtn = FrameUtil.createButton(this,"OK",new Point(250,70),100,50);
 
         okBtn.addActionListener(e ->{
             this.setVisible(false);

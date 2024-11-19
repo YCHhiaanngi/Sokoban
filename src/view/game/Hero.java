@@ -25,7 +25,6 @@ public class Hero extends JComponent {
     }
 
     BufferedImage[] image = new BufferedImage[4];
-//todo:把图片再画的合适一些，现在有点违和，尤其是hero-right（night的右边）
     {if(LoginFrame.isDayTheme){
         try {
             image[0] = ImageIO.read(new File("img/man-back.jpg"));
@@ -42,7 +41,7 @@ public class Hero extends JComponent {
             image[0] = ImageIO.read(new File("img/hero-front.jpg"));
             image[1] = ImageIO.read(new File("img/hero-back.jpg"));
             image[2] = ImageIO.read(new File("img/hero-left.png"));
-            image[3] = ImageIO.read(new File("img/hero-right.jpg"));
+            image[3] = ImageIO.read(new File("img/hero-right.png"));
         } catch (IOException e) {
             ErrorFrame errorFrame = new ErrorFrame(500, 200, "The man's image cannot be loaded");
             errorFrame.setVisible(true);

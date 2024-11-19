@@ -21,10 +21,10 @@ public class LoseFrame extends JFrame {
         this.setLayout(null);
         this.setSize(width, height);
 
-        //todo:调整窗口、标签的大小
+        //todo:调整颜色
 
-        this.loseMsg = FrameUtil.createJLabel(this,new Point(width/2,height/2),500,50,"You lose! Please try again.");
-        this.okBtn = FrameUtil.createButton(this,"OK",new Point(width/2+50,height/2+50),50,50);
+        this.loseMsg = FrameUtil.createJLabel(this,new Point(200,20),500,50,"You lose! Please try again.");
+        this.okBtn = FrameUtil.createButton(this,"OK",new Point(250,70),100,50);
 
         okBtn.addActionListener(e ->{
             this.setVisible(false);
