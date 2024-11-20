@@ -41,7 +41,7 @@ public class LevelFrame extends JFrame {
             }
         }
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(levelImage);
-        backgroundPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
+        backgroundPanel.setBounds(0, 0, 1800,900 );
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
 
         JButton level1Btn = FrameUtil.createButton(layeredPane, "Level1", new Point(150, height / 2 - 50), 600, 100,JLayeredPane.MODAL_LAYER);

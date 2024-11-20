@@ -45,7 +45,7 @@ public class LoginFrame extends JFrame {
             throw new RuntimeException("Failed to load background image", e);
         }
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(backgroundImage);
-        backgroundPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
+        backgroundPanel.setBounds(0, 0, 1750, 890);
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
 
         JLabel userLabel = FrameUtil.createJLabel(layeredPane, new Point(680, 300), 70, 40, "username:",JLayeredPane.MODAL_LAYER);
