@@ -67,7 +67,7 @@ public class GameFrame extends JFrame {
         // 创建背景面板
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(gameImage);
         backgroundPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
-        layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(backgroundPanel, JLayeredPane.FRAME_CONTENT_LAYER);
 
         // 创建游戏面板
         gamePanel = new GamePanel(mapMatrix);

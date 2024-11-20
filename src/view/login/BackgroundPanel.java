@@ -25,7 +25,7 @@ public class BackgroundPanel extends JPanel {
         super.addNotify();
         // 确保 BackgroundPanel 总是位于最底层
         if (getParent() instanceof JLayeredPane) {
-            ((JLayeredPane) getParent()).setLayer(this, JLayeredPane.DEFAULT_LAYER);
+            ((JLayeredPane) getParent()).setLayer(this, JLayeredPane.FRAME_CONTENT_LAYER);
         }
     }
 }
