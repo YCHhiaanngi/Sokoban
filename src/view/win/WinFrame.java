@@ -1,6 +1,7 @@
 package view.win;
 
 import view.FrameUtil;
+import view.level.LevelFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +20,11 @@ public class WinFrame extends JFrame{
         this.setTitle("You have passed Level " + currentLevel + "!");
         this.setLayout(null);
         this.setSize(width, height);
+        JLayeredPane layeredPane = new JLayeredPane();
+        this.setContentPane(layeredPane);
 
-        this.winMsg = FrameUtil.createJLabel(this,new Point(200,20),500,50,"You win! You can enter the next level.");
-        this.okBtn = FrameUtil.createButton(this,"OK",new Point(250,70),100,50);
+        this.winMsg = FrameUtil.createJLabel(layeredPane,new Point(200,20),500,50,"You win! You can enter the next level.",JLayeredPane.MODAL_LAYER);
+        this.okBtn = FrameUtil.createButton(layeredPane,"OK",new Point(250,70),100,50,JLayeredPane.MODAL_LAYER);
 
         okBtn.addActionListener(e ->{
             this.setVisible(false);

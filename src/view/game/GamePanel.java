@@ -8,6 +8,7 @@ import model.MapMatrix;
 
 import javax.swing.*;
 
+import static javax.swing.JLayeredPane.MODAL_LAYER;
 import static view.game.Hero.heroDirection;
 
 

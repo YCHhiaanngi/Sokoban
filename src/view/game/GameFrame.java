@@ -1,9 +1,13 @@
 package view.game;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import controller.GameController;
 import error.ErrorFrame;
@@ -16,6 +20,7 @@ import view.win.WinFrame;
 
 import static view.level.LevelFrame.getCurrentLevel;
 import static view.login.LoginFrame.getUserName;
+import static view.login.LoginFrame.isDayTheme;
 
 public class GameFrame extends JFrame {
 
@@ -36,29 +41,55 @@ public class GameFrame extends JFrame {
     private JLabel stepLabel;
     private GamePanel gamePanel;
     private LoadLevelFrame loadLevelFrame;
+    private BufferedImage gameImage;
 
 //todo:调整页面宽度
     public GameFrame(int width, int height, MapMatrix mapMatrix) throws FileNotFoundException {
         this.setTitle("Sokoban   Level:"+getCurrentLevel());
         this.setLayout(null);
         this.setSize(2000, 900);
+        JLayeredPane layeredPane = new JLayeredPane();
+        this.setContentPane(layeredPane);
+        if (isDayTheme) {
+            try {
+                gameImage = ImageIO.read(new File("img/level-green.jpg"));
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load day theme image", e);
+            }
+        } else {
+            try {
+                gameImage = ImageIO.read(new File("img/level-night.jpg"));
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load night theme image", e);
+            }
+        }
+
+        // 创建背景面板
+        view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(gameImage);
+        backgroundPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
+        layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
+
+        // 创建游戏面板
         gamePanel = new GamePanel(mapMatrix);
-        gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2+185);
-        this.add(gamePanel);
+        gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2 + 185);
+        layeredPane.add(gamePanel, JLayeredPane.MODAL_LAYER);
+
+        // 初始化控制器
         this.controller = new GameController(gamePanel, mapMatrix);
 
-        this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 200, 80);
-        this.quitBtn = FrameUtil.createButton(this, "Quit", new Point(gamePanel.getWidth() + 360, 120), 200, 80);
-        this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 225), 200, 80);
-        this.progressBtn = FrameUtil.createButton(this, "Get Previous Progress", new Point(gamePanel.getWidth() + 80, 330), 200, 80);
-        this.AISolveBtn = FrameUtil.createButton(this,"AI Solver", new Point(gamePanel.getWidth() + 360, 330), 200, 80);
-        this.saveBtn = FrameUtil.createButton(this,"Save", new Point(gamePanel.getWidth() + 360, 225), 200, 80);
-        this.undoBtn = FrameUtil.createButton(this,"Undo",new Point(gamePanel.getWidth() + 360 , 440), 200, 80);
-        this.upBtn = FrameUtil.createButton(this,"↑", new Point(gamePanel.getWidth() + 120, 450), 70, 70);
-        this.downBtn = FrameUtil.createButton(this,"↓", new Point(gamePanel.getWidth() + 120, 520), 70, 70);
-        this.leftBtn = FrameUtil.createButton(this,"←", new Point(gamePanel.getWidth() + 50, 520), 70, 70);
-        this.rightBtn = FrameUtil.createButton(this,"→", new Point(gamePanel.getWidth() + 190, 520), 70, 70);
-        this.stepLabel = FrameUtil.createJLabel(this, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50);
+        // 创建按钮
+        this.restartBtn = FrameUtil.createButton(layeredPane, "Restart", new Point(gamePanel.getWidth() + 80, 120), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.quitBtn = FrameUtil.createButton(layeredPane, "Quit", new Point(gamePanel.getWidth() + 360, 120), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.loadBtn = FrameUtil.createButton(layeredPane, "Load", new Point(gamePanel.getWidth() + 80, 225), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.progressBtn = FrameUtil.createButton(layeredPane, "Get Previous Progress", new Point(gamePanel.getWidth() + 80, 330), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.AISolveBtn = FrameUtil.createButton(layeredPane, "AI Solver", new Point(gamePanel.getWidth() + 360, 330), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.saveBtn = FrameUtil.createButton(layeredPane, "Save", new Point(gamePanel.getWidth() + 360, 225), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.undoBtn = FrameUtil.createButton(layeredPane, "Undo", new Point(gamePanel.getWidth() + 360, 440), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.upBtn = FrameUtil.createButton(layeredPane, "↑", new Point(gamePanel.getWidth() + 120, 450), 70, 70, JLayeredPane.PALETTE_LAYER);
+        this.downBtn = FrameUtil.createButton(layeredPane, "↓", new Point(gamePanel.getWidth() + 120, 520), 70, 70, JLayeredPane.PALETTE_LAYER);
+        this.leftBtn = FrameUtil.createButton(layeredPane, "←", new Point(gamePanel.getWidth() + 50, 520), 70, 70, JLayeredPane.PALETTE_LAYER);
+        this.rightBtn = FrameUtil.createButton(layeredPane, "→", new Point(gamePanel.getWidth() + 190, 520), 70, 70, JLayeredPane.PALETTE_LAYER);
+        this.stepLabel = FrameUtil.createJLabel(layeredPane, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50, JLayeredPane.PALETTE_LAYER);
         gamePanel.setStepLabel(stepLabel);
 
         if(getUserName() == null){

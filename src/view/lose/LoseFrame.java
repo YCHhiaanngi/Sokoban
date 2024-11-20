@@ -20,11 +20,13 @@ public class LoseFrame extends JFrame {
         this.setTitle("You Lose in Level "+currentLevel);
         this.setLayout(null);
         this.setSize(width, height);
+        JLayeredPane layeredPane = new JLayeredPane();
+        this.setContentPane(layeredPane);
 
         //todo:调整颜色
 
-        this.loseMsg = FrameUtil.createJLabel(this,new Point(200,20),500,50,"You lose! Please try again.");
-        this.okBtn = FrameUtil.createButton(this,"OK",new Point(250,70),100,50);
+        this.loseMsg = FrameUtil.createJLabel(layeredPane,new Point(200,20),500,50,"You lose! Please try again.",JLayeredPane.MODAL_LAYER);
+        this.okBtn = FrameUtil.createButton(layeredPane,"OK",new Point(250,70),100,50,JLayeredPane.MODAL_LAYER);
 
         okBtn.addActionListener(e ->{
             this.setVisible(false);

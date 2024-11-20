@@ -37,26 +37,28 @@ public class LoginFrame extends JFrame {
         this.setTitle("Login");
         this.setLayout(null);
         this.setSize(1900, 900);
+        JLayeredPane layeredPane = new JLayeredPane();
+        this.setContentPane(layeredPane);
         try {
             backgroundImage = ImageIO.read(new File("img/login.jpg"));
         } catch (IOException e) {
             throw new RuntimeException("Failed to load background image", e);
         }
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(backgroundImage);
-        this.setContentPane(backgroundPanel);
-        this.setLayout(null);
+        backgroundPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
+        layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
 
-        JLabel userLabel = FrameUtil.createJLabel(this, new Point(680, 300), 70, 40, "username:");
-        JLabel passLabel = FrameUtil.createJLabel(this, new Point(680, 400), 70, 40, "password:");
-        username = FrameUtil.createJTextField(this, new Point(750, 300), 120, 40);
-        password = FrameUtil.createJTextField(this, new Point(750, 400), 120, 40);
+        JLabel userLabel = FrameUtil.createJLabel(layeredPane, new Point(680, 300), 70, 40, "username:",JLayeredPane.MODAL_LAYER);
+        JLabel passLabel = FrameUtil.createJLabel(layeredPane, new Point(680, 400), 70, 40, "password:",JLayeredPane.MODAL_LAYER);
+        username = FrameUtil.createJTextField(layeredPane, new Point(750, 300), 120, 40,JLayeredPane.MODAL_LAYER);
+        password = FrameUtil.createJTextField(layeredPane, new Point(750, 400), 120, 40,JLayeredPane.MODAL_LAYER);
 
-        submitBtn = FrameUtil.createButton(this, "Confirm", new Point(540, 310), 100, 40);
-        resetBtn = FrameUtil.createButton(this, "Reset", new Point(950, 310), 100, 40);
-        signinBtn = FrameUtil.createButton(this, "Sign in", new Point(570, 400), 100, 40);
-        guestBtn = FrameUtil.createButton(this, "Guest Mode", new Point(920, 400), 100, 40);
-        chooseDaytime = FrameUtil.createButton(this, "Daytime", new Point(610, 490), 100, 40);
-        chooseNight = FrameUtil.createButton(this, "Night",new Point(890, 490), 100, 40);
+        submitBtn = FrameUtil.createButton(layeredPane, "Confirm", new Point(540, 310), 100, 40,JLayeredPane.MODAL_LAYER);
+        resetBtn = FrameUtil.createButton(layeredPane, "Reset", new Point(950, 310), 100, 40,JLayeredPane.MODAL_LAYER);
+        signinBtn = FrameUtil.createButton(layeredPane, "Sign in", new Point(570, 400), 100, 40,JLayeredPane.MODAL_LAYER);
+        guestBtn = FrameUtil.createButton(layeredPane, "Guest Mode", new Point(920, 400), 100, 40,JLayeredPane.MODAL_LAYER);
+        chooseDaytime = FrameUtil.createButton(layeredPane, "Daytime", new Point(610, 490), 100, 40,JLayeredPane.MODAL_LAYER);
+        chooseNight = FrameUtil.createButton(layeredPane, "Night",new Point(890, 490), 100, 40,JLayeredPane.MODAL_LAYER);
 
         messagePanel = new JPanel() {
             @Override

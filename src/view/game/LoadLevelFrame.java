@@ -30,20 +30,22 @@ public class LoadLevelFrame extends JFrame {
         this.setTitle("Load Level "+path);
         this.setLayout(null);
         this.setSize(width, height);
+        JLayeredPane layeredPane = new JLayeredPane();
+        this.setContentPane(layeredPane);
         gamePanel = new GamePanel(mapMatrix);
         gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2);
         this.add(gamePanel);
         this.controller = new GameController(gamePanel, mapMatrix);
 
-        this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
-        this.quitBtn = FrameUtil.createButton(this, "Quit", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
-        this.AISloveBtn = FrameUtil.createButton(this,"AI Solver", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
-        this.undoBtn = FrameUtil.createButton(this,"Undo",new Point(gamePanel.getWidth() + 160 , 300), 80, 50);
-        this.upBtn = FrameUtil.createButton(this,"↑", new Point(gamePanel.getWidth() + 110, 360), 30, 30);
-        this.downBtn = FrameUtil.createButton(this,"↓", new Point(gamePanel.getWidth() + 110, 390), 30, 30);
-        this.leftBtn = FrameUtil.createButton(this,"←", new Point(gamePanel.getWidth() + 80, 390), 30, 30);
-        this.rightBtn = FrameUtil.createButton(this,"→", new Point(gamePanel.getWidth() + 140, 390), 30, 30);
-        this.stepLabel = FrameUtil.createJLabel(this, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50);
+        this.restartBtn = FrameUtil.createButton(layeredPane, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50,JLayeredPane.MODAL_LAYER);
+        this.quitBtn = FrameUtil.createButton(layeredPane, "Quit", new Point(gamePanel.getWidth() + 80, 210), 80, 50,JLayeredPane.MODAL_LAYER);
+        this.AISloveBtn = FrameUtil.createButton(layeredPane,"AI Solver", new Point(gamePanel.getWidth() + 80, 300), 80, 50,JLayeredPane.MODAL_LAYER);
+        this.undoBtn = FrameUtil.createButton(layeredPane,"Undo",new Point(gamePanel.getWidth() + 160 , 300), 80, 50,JLayeredPane.MODAL_LAYER);
+        this.upBtn = FrameUtil.createButton(layeredPane,"↑", new Point(gamePanel.getWidth() + 110, 360), 30, 30,JLayeredPane.MODAL_LAYER);
+        this.downBtn = FrameUtil.createButton(layeredPane,"↓", new Point(gamePanel.getWidth() + 110, 390), 30, 30,JLayeredPane.MODAL_LAYER);
+        this.leftBtn = FrameUtil.createButton(layeredPane,"←", new Point(gamePanel.getWidth() + 80, 390), 30, 30,JLayeredPane.MODAL_LAYER);
+        this.rightBtn = FrameUtil.createButton(layeredPane,"→", new Point(gamePanel.getWidth() + 140, 390), 30, 30,JLayeredPane.MODAL_LAYER);
+        this.stepLabel = FrameUtil.createJLabel(layeredPane, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50,JLayeredPane.MODAL_LAYER);
         gamePanel.setStepLabel(stepLabel);
 
         this.restartBtn.addActionListener(e -> {

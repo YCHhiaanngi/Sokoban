@@ -24,6 +24,8 @@ public class LevelFrame extends JFrame {
         this.setTitle("Select Level");
         this.setLayout(null);
         this.setSize(2000, 900);
+        JLayeredPane layeredPane = new JLayeredPane();
+        this.setContentPane(layeredPane);
     //todo:定义一个boolean，if（green）则level-green，else level-night
         if(isDayTheme) {
             try {
@@ -39,14 +41,14 @@ public class LevelFrame extends JFrame {
             }
         }
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(levelImage);
-        this.setContentPane(backgroundPanel);
-        this.setLayout(null);
+        backgroundPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
+        layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
 
-        JButton level1Btn = FrameUtil.createButton(this, "Level1", new Point(150, height / 2 - 50), 600, 100);
-        JButton level2Btn = FrameUtil.createButton(this, "Level2", new Point(150, height / 2 - 50+150), 600, 100);
-        JButton level3Btn = FrameUtil.createButton(this, "Level3", new Point(150, height / 2 - 50+300), 600, 100);
-        JButton level4Btn = FrameUtil.createButton(this, "Level4", new Point(150, height / 2 - 50+450), 600, 100);
-        JButton level5Btn = FrameUtil.createButton(this, "Level5", new Point(150, height / 2 - 50+600), 600, 100);
+        JButton level1Btn = FrameUtil.createButton(layeredPane, "Level1", new Point(150, height / 2 - 50), 600, 100,JLayeredPane.MODAL_LAYER);
+        JButton level2Btn = FrameUtil.createButton(layeredPane, "Level2", new Point(150, height / 2 - 50+150), 600, 100,JLayeredPane.MODAL_LAYER);
+        JButton level3Btn = FrameUtil.createButton(layeredPane, "Level3", new Point(150, height / 2 - 50+300), 600, 100,JLayeredPane.MODAL_LAYER);
+        JButton level4Btn = FrameUtil.createButton(layeredPane, "Level4", new Point(150, height / 2 - 50+450), 600, 100,JLayeredPane.MODAL_LAYER);
+        JButton level5Btn = FrameUtil.createButton(layeredPane, "Level5", new Point(150, height / 2 - 50+600), 600, 100,JLayeredPane.MODAL_LAYER);
         level1Btn.addActionListener(l->{
             MapMatrix mapMatrix = new MapMatrix(new int[][]{
                     {1, 1, 1, 1, 1, 1},
