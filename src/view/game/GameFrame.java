@@ -54,13 +54,15 @@ public class GameFrame extends JFrame {
             try {
                 gameImage = ImageIO.read(new File("img/level-green.jpg"));
             } catch (IOException e) {
-                throw new RuntimeException("Failed to load day theme image", e);
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Failed to load day theme image");
+                errorFrame.setVisible(true);
             }
         } else {
             try {
                 gameImage = ImageIO.read(new File("img/level-night.jpg"));
             } catch (IOException e) {
-                throw new RuntimeException("Failed to load night theme image", e);
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Failed to load night theme image");
+                errorFrame.setVisible(true);
             }
         }
 
@@ -107,9 +109,14 @@ public class GameFrame extends JFrame {
         this.loadBtn.addActionListener(e -> {
             String string = JOptionPane.showInputDialog(this, "Input path:");
             System.out.println(string);
-            controller.loadGame(string);
-            this.setVisible(false);
-            gamePanel.requestFocusInWindow();//enable key listener
+            try {
+                controller.loadGame(string);
+                this.setVisible(false);
+                gamePanel.requestFocusInWindow();//enable key listener
+            }catch(Exception ex){
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Map file not found");
+                errorFrame.setVisible(true);
+            }
         });
         this.AISolveBtn.addActionListener(e -> {
             gamePanel.requestFocusInWindow();

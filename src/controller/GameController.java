@@ -88,20 +88,13 @@ public class GameController {
         track.push(grid);
     }
 
-    public void loadGame(String path){//加载自定义关卡
-
-        try {
-            File file = new File(path);//载入文件
-            int[][] map = readArray(file,0);
-            model.setMatrix(map);
-            loadLevelFrame = new LoadLevelFrame(2000,1000,model,path);//创建新loadLevel窗口
-            loadLevelFrame.setVisible(true);
-            stopAutoSave();//停止自动保存
-        } catch (Exception e) {
-            ErrorFrame errorFrame = new ErrorFrame(500,200,"Map file not found");
-            errorFrame.setVisible(true);
-        }
-
+    public void loadGame(String path) throws FileNotFoundException{//加载自定义关卡
+        File file = new File(path);//载入文件
+        int[][] map = readArray(file,0);
+        model.setMatrix(map);
+        loadLevelFrame = new LoadLevelFrame(2000,1000,model,path);//创建新loadLevel窗口
+        loadLevelFrame.setVisible(true);
+        stopAutoSave();//停止自动保存
     }
 
     public void saveGame(){

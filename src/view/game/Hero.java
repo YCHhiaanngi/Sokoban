@@ -38,8 +38,8 @@ public class Hero extends JComponent {
     }
         else {
         try {
-            image[0] = ImageIO.read(new File("img/hero-front.jpg"));
-            image[1] = ImageIO.read(new File("img/hero-back.jpg"));
+            image[0] = ImageIO.read(new File("img/hero-back.jpg"));
+            image[1] = ImageIO.read(new File("img/hero-front.jpg"));
             image[2] = ImageIO.read(new File("img/hero-left.png"));
             image[3] = ImageIO.read(new File("img/hero-right.png"));
         } catch (IOException e) {

@@ -31,13 +31,15 @@ public class LevelFrame extends JFrame {
             try {
                 levelImage = ImageIO.read(new File("img/level-green.jpg"));
             } catch (IOException e) {
-                throw new RuntimeException("Failed to load  level image", e);
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Failed to load day theme image");
+                errorFrame.setVisible(true);
             }
         }else{
             try {
                 levelImage = ImageIO.read(new File("img/level-night.jpg"));
             } catch (IOException e) {
-                throw new RuntimeException("Failed to load  level image", e);
+                ErrorFrame errorFrame = new ErrorFrame(500,200,"Failed to load night theme image");
+                errorFrame.setVisible(true);
             }
         }
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(levelImage);
