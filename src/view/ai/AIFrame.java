@@ -14,7 +14,6 @@ public class AIFrame extends JFrame {
 
     private JButton closeBtn;
 
-    //todo:调整窗口、标签的大小
     public AIFrame(int width, int height, AIResult result) throws FileNotFoundException {
         this.setTitle("AI Result");
         this.setLayout(null);

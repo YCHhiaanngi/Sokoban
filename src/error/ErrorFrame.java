@@ -16,7 +16,6 @@ public class ErrorFrame extends JFrame{
         JLayeredPane layeredPane = new JLayeredPane();
         this.setContentPane(layeredPane);
 
-        //todo:调整窗口、标签的大小
 
         this.label = FrameUtil.createJLabel(layeredPane, new Point(130, height / 2-40), 500, 50, "ERROR: " + message,JLayeredPane.MODAL_LAYER);
         this.okBtn = FrameUtil.createButton(layeredPane, "OK", new Point(150, height / 2+10 ), 100, 50,JLayeredPane.MODAL_LAYER);
