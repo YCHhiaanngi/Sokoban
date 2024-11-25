@@ -28,6 +28,9 @@ public class WinFrame extends JFrame{
 
         okBtn.addActionListener(e ->{
             this.setVisible(false);
+            LevelFrame levelFramewin = new LevelFrame(500,200);
+            levelFramewin.setVisible(true);
+//          gamePanel.requestFocusInWindow();
         });
 
         this.setLocationRelativeTo(null);
