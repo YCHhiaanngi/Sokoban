@@ -9,6 +9,9 @@ import model.MapMatrix;
 import view.FrameUtil;
 import view.ai.AIFrame;
 import view.level.LevelFrame;
+import view.lose.LoseFrame;
+
+import static view.level.LevelFrame.getCurrentLevel;
 
 public class LoadLevelFrame extends JFrame {
 
@@ -98,5 +101,6 @@ public class LoadLevelFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
+
 
 }
