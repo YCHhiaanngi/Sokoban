@@ -94,7 +94,7 @@ public class GameFrame extends JFrame {
         this.leftBtn = FrameUtil.createButton(layeredPane, "←", new Point(gamePanel.getWidth() + 50, 520), 70, 70, JLayeredPane.PALETTE_LAYER);
         this.rightBtn = FrameUtil.createButton(layeredPane, "→", new Point(gamePanel.getWidth() + 190, 520), 70, 70, JLayeredPane.PALETTE_LAYER);
         this.stepLabel = FrameUtil.createJLabel(layeredPane, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50, JLayeredPane.PALETTE_LAYER);
-        this.bgmBtn = FrameUtil.createButton(layeredPane, "BGM", new Point(gamePanel.getWidth() + 360, 540), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.bgmBtn = FrameUtil.createButton(layeredPane, "BGM Setting", new Point(gamePanel.getWidth() + 360, 540), 200, 80, JLayeredPane.PALETTE_LAYER);
         gamePanel.setStepLabel(stepLabel);
 
         if(getUserName() == null){

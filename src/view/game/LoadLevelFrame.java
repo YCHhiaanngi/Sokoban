@@ -48,7 +48,7 @@ public class LoadLevelFrame extends JFrame {
         this.leftBtn = FrameUtil.createButton(layeredPane,"←", new Point(gamePanel.getWidth() + 80, 390), 30, 30,JLayeredPane.MODAL_LAYER);
         this.rightBtn = FrameUtil.createButton(layeredPane,"→", new Point(gamePanel.getWidth() + 140, 390), 30, 30,JLayeredPane.MODAL_LAYER);
         this.stepLabel = FrameUtil.createJLabel(layeredPane, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50,JLayeredPane.MODAL_LAYER);
-        this.bgmBtn = FrameUtil.createButton(layeredPane, "BGM", new Point(gamePanel.getWidth() + 360, 540), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.bgmBtn = FrameUtil.createButton(layeredPane, "BGM Setting", new Point(gamePanel.getWidth() + 360, 540), 200, 80, JLayeredPane.PALETTE_LAYER);
         gamePanel.setStepLabel(stepLabel);
 
         this.restartBtn.addActionListener(e -> {
