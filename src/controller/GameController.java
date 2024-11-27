@@ -7,6 +7,9 @@ import view.game.*;
 import view.lose.LoseFrame;
 import view.win.WinFrame;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -33,6 +36,8 @@ public class GameController {
 
     private static ScheduledExecutorService scheduler;
     private static Runnable task;
+
+    private static Clip clip;
 
     public GameController(GamePanel view, MapMatrix model) throws FileNotFoundException {
         this.view = view;
@@ -234,10 +239,12 @@ public class GameController {
             track.push(grid);
 
             if (isWin()) {
+                h.setIsWin(true);
                 winFrame = new WinFrame(600, 200, getCurrentLevel());
                 winFrame.setVisible(true);
             }
             if (isLose() && !isWin()) {
+                h.setIsLose(true);
                 loseFrame = new LoseFrame(600, 200, getCurrentLevel());
                 loseFrame.setVisible(true);
             }

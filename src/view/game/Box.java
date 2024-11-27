@@ -1,5 +1,7 @@
 package view.game;
 
+import error.ErrorFrame;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -21,7 +23,8 @@ public class Box extends JComponent {
         try {
             image1 = ImageIO.read(new File("img/box.png"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorFrame error = new ErrorFrame(500,200,"Image not found");
+            error.setVisible(true);
         }
     }
     BufferedImage image2;
@@ -29,7 +32,8 @@ public class Box extends JComponent {
         try {
             image2 = ImageIO.read(new File("img/boxongoal.png"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorFrame error = new ErrorFrame(500,200,"Image not found");
+            error.setVisible(true);
         }
     }
 

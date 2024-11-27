@@ -4,7 +4,6 @@ import controller.GameController;
 import model.MapMatrix;
 import view.FrameUtil;
 import view.game.GamePanel;
-import view.game.LoadLevelFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +28,7 @@ public class LoseFrame extends JFrame {
         this.loseMsg = FrameUtil.createJLabel(layeredPane,new Point(200,20),500,50,"You lose! Please try again.",JLayeredPane.MODAL_LAYER);
         this.okBtn = FrameUtil.createButton(layeredPane,"OK",new Point(250,70),100,50,JLayeredPane.MODAL_LAYER);
 
-        this.okBtn.addActionListener(e ->{
+        okBtn.addActionListener(e ->{
             this.setVisible(false);
         });
 

@@ -1,5 +1,6 @@
 package view.game;
 
+import error.ErrorFrame;
 import view.login.LoginFrame;
 
 import javax.imageio.ImageIO;
@@ -31,20 +32,22 @@ public class GridComponent extends JComponent {
         if(LoginFrame.isDayTheme) {
             try {
                 image[0] = ImageIO.read(new File("img/empty.png"));
-                image[1] = ImageIO.read(new File("img/barrier.jpg"));
-                image[2] = ImageIO.read(new File("img/goal.jpg"));
+                image[1] = ImageIO.read(new File("img/barrier.png"));
+                image[2] = ImageIO.read(new File("img/goal.png"));
 
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                ErrorFrame error = new ErrorFrame(500,200,"Image not found");
+                error.setVisible(true);
             }
         }else{
             try {
-                image[0] = ImageIO.read(new File("img/empty-night.jpg"));
-                image[1] = ImageIO.read(new File("img/barrier-night.jpg"));
-                image[2] = ImageIO.read(new File("img/goal-night.jpg"));
+                image[0] = ImageIO.read(new File("img/empty-night.png"));
+                image[1] = ImageIO.read(new File("img/barrier-night.png"));
+                image[2] = ImageIO.read(new File("img/goal-night.png"));
 
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                ErrorFrame error = new ErrorFrame(500,200,"Image not found");
+                error.setVisible(true);
             }
         }
     }
