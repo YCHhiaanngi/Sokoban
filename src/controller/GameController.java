@@ -200,7 +200,12 @@ public class GameController {
         int bRow = row + 2*direction.getRow();
         int bCol = col + 2*direction.getCol();
         GridComponent targetGrid = view.getGridComponent(tRow, tCol);
-        GridComponent boxGrid = view.getGridComponent(bRow, bCol);
+        GridComponent boxGrid;
+        if(bRow>=0 && bRow< model.getHeight() && bCol>=0 && bCol < model.getWidth()) {
+            boxGrid = view.getGridComponent(bRow, bCol);
+        }else{
+            boxGrid = null;
+        }
         int[][] map = model.getMatrix();
         int[][] grid = deepCopy(map);
         if (map[tRow][tCol] == 0 || map[tRow][tCol] == 2) {
