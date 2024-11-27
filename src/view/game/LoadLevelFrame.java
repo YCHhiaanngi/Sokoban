@@ -8,10 +8,8 @@ import controller.GameController;
 import model.MapMatrix;
 import view.FrameUtil;
 import view.ai.AIFrame;
+import view.bgm.BGMFrame;
 import view.level.LevelFrame;
-import view.lose.LoseFrame;
-
-import static view.level.LevelFrame.getCurrentLevel;
 
 public class LoadLevelFrame extends JFrame {
 
@@ -25,6 +23,7 @@ public class LoadLevelFrame extends JFrame {
     private JButton leftBtn;
     private JButton rightBtn;
     private JButton undoBtn;
+    private JButton bgmBtn;
 
     private JLabel stepLabel;
     private GamePanel gamePanel;
@@ -49,6 +48,7 @@ public class LoadLevelFrame extends JFrame {
         this.leftBtn = FrameUtil.createButton(layeredPane,"←", new Point(gamePanel.getWidth() + 80, 390), 30, 30,JLayeredPane.MODAL_LAYER);
         this.rightBtn = FrameUtil.createButton(layeredPane,"→", new Point(gamePanel.getWidth() + 140, 390), 30, 30,JLayeredPane.MODAL_LAYER);
         this.stepLabel = FrameUtil.createJLabel(layeredPane, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50,JLayeredPane.MODAL_LAYER);
+        this.bgmBtn = FrameUtil.createButton(layeredPane, "BGM", new Point(gamePanel.getWidth() + 360, 540), 200, 80, JLayeredPane.PALETTE_LAYER);
         gamePanel.setStepLabel(stepLabel);
 
         this.restartBtn.addActionListener(e -> {
@@ -93,6 +93,10 @@ public class LoadLevelFrame extends JFrame {
             gamePanel.requestFocusInWindow();
             System.out.println("undo");
         });
+        this.bgmBtn.addActionListener(e -> {
+            BGMFrame bgmFrame = new BGMFrame(500,200);
+            bgmFrame.setVisible(true);
+        });
 
         SwingUtilities.invokeLater(() -> {
             gamePanel.requestFocusInWindow();
@@ -101,6 +105,5 @@ public class LoadLevelFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
-
 
 }

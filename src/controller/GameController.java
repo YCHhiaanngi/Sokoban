@@ -7,6 +7,9 @@ import view.game.*;
 import view.lose.LoseFrame;
 import view.win.WinFrame;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -14,6 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static view.game.AISolver.aiSolve;
+import static view.game.Hero.heroDirection;
 import static view.level.LevelFrame.getCurrentLevel;
 import static view.login.LoginFrame.getUserName;
 import static view.login.LoginFrame.getPassword;
@@ -33,6 +37,8 @@ public class GameController {
 
     private static ScheduledExecutorService scheduler;
     private static Runnable task;
+
+    private static Clip clip;
 
     public GameController(GamePanel view, MapMatrix model) throws FileNotFoundException {
         this.view = view;
@@ -74,6 +80,7 @@ public class GameController {
         track.clear();
         int[][] grid = deepCopy(model.getMatrix());
         track.push(grid);
+        heroDirection = Direction.DOWN;
     }
 
     public void restartGame(String path) {//重新开始（自定义模式）
@@ -86,6 +93,7 @@ public class GameController {
         track.clear();
         int[][] grid = deepCopy(model.getMatrix());
         track.push(grid);
+        heroDirection = Direction.DOWN;
     }
 
     public void loadGame(String path) throws FileNotFoundException{//加载自定义关卡
@@ -234,10 +242,12 @@ public class GameController {
             track.push(grid);
 
             if (isWin()) {
+                h.setIsWin(true);
                 winFrame = new WinFrame(600, 200, getCurrentLevel());
                 winFrame.setVisible(true);
             }
             if (isLose() && !isWin()) {
+                h.setIsLose(true);
                 loseFrame = new LoseFrame(600, 200, getCurrentLevel());
                 loseFrame.setVisible(true);
             }

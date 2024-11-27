@@ -1,13 +1,9 @@
 import error.ErrorFrame;
 import view.level.LevelFrame;
 import view.login.LoginFrame;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
+
+import static view.bgm.BGMFrame.playMusic;
 
 public class Main {
 
@@ -20,20 +16,5 @@ public class Main {
 //            levelFrame.setVisible(false);
 //            loginFrame.setLevelFrame(levelFrame);
         });
-    }
-
-    public static void playMusic(){
-        try{
-            File audioFile = new File("sound/bgm.wav");
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
-            audioStream.close();
-        } catch (Exception e) {
-            ErrorFrame errorFrame = new ErrorFrame(500,200,"Music file not found");
-            errorFrame.setVisible(true);
-        }
     }
 }
