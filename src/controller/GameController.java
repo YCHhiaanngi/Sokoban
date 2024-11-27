@@ -17,7 +17,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static view.game.AISolver.aiSolve;
-import static view.game.Hero.heroDirection;
 import static view.level.LevelFrame.getCurrentLevel;
 import static view.login.LoginFrame.getUserName;
 import static view.login.LoginFrame.getPassword;
@@ -80,7 +79,6 @@ public class GameController {
         track.clear();
         int[][] grid = deepCopy(model.getMatrix());
         track.push(grid);
-        heroDirection = Direction.DOWN;
     }
 
     public void restartGame(String path) {//重新开始（自定义模式）
@@ -93,7 +91,6 @@ public class GameController {
         track.clear();
         int[][] grid = deepCopy(model.getMatrix());
         track.push(grid);
-        heroDirection = Direction.DOWN;
     }
 
     public void loadGame(String path) throws FileNotFoundException{//加载自定义关卡
