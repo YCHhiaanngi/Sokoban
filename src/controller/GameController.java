@@ -103,6 +103,7 @@ public class GameController {
         loadLevelFrame = new LoadLevelFrame(2000,1000,model,path);//创建新loadLevel窗口
         loadLevelFrame.setVisible(true);
         stopAutoSave();//停止自动保存
+        heroDirection = Direction.DOWN;
     }
 
     public void saveGame(){
@@ -152,6 +153,7 @@ public class GameController {
                 model.setMatrix(map);
                 view.initialGame();
                 view.setCurrentStep(currentStep);
+                heroDirection = Direction.DOWN;
             }else {
                 ErrorFrame errorFrame = new ErrorFrame(500,200,"You don't have any progress in this level.");
                 errorFrame.setVisible(true);
