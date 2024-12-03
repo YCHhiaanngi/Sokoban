@@ -4,6 +4,7 @@ import error.ErrorFrame;
 import model.MapMatrix;
 import view.FrameUtil;
 import view.game.GameFrame;
+import view.game.RankFrame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,7 +27,6 @@ public class LevelFrame extends JFrame {
         this.setSize(2000, 5000);
         JLayeredPane layeredPane = new JLayeredPane();
         this.setContentPane(layeredPane);
-    //todo:定义一个boolean，if（green）则level-green，else level-night
         if(isDayTheme) {
             try {
                 levelImage = ImageIO.read(new File("img/level-green.jpg"));
@@ -51,6 +51,7 @@ public class LevelFrame extends JFrame {
         JButton level3Btn = FrameUtil.createButton(layeredPane, "Level3", new Point(150, height / 2 - 50+300), 600, 100,JLayeredPane.MODAL_LAYER);
         JButton level4Btn = FrameUtil.createButton(layeredPane, "Level4", new Point(150, height / 2 - 50+450), 600, 100,JLayeredPane.MODAL_LAYER);
         JButton level5Btn = FrameUtil.createButton(layeredPane, "Level5", new Point(150, height / 2 - 50+600), 600, 100,JLayeredPane.MODAL_LAYER);
+        JButton RankBtn = FrameUtil.createButton(layeredPane, "Ranking", new Point(850, height / 2 - 50+300), 600, 100,JLayeredPane.MODAL_LAYER);
 
         level1Btn.addActionListener(l->{
             System.out.println("Level1 button clicked");
@@ -167,6 +168,11 @@ public class LevelFrame extends JFrame {
             if (gameFrame != null) {
                 gameFrame.setVisible(true);
             }
+        });
+
+        RankBtn.addActionListener(e -> {
+            RankFrame rankFrame = new RankFrame();
+            rankFrame.setVisible(true);
         });
 
         this.setLocationRelativeTo(null);

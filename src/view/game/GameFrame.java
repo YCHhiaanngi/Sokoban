@@ -174,6 +174,29 @@ public class GameFrame extends JFrame {
 
         //todo: add other button here
 
+        JFrame clockFrame = new JFrame("time counter");
+        clockFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        clockFrame.setSize(300, 150);
+        clockFrame.setLayout(new BorderLayout());
+
+        JLabel timeLabel = new JLabel("00:00:00", SwingConstants.CENTER);
+        timeLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        clockFrame.add(timeLabel, BorderLayout.CENTER);
+        // 初始化计时变量
+        final int[] elapsedSeconds = {0};
+        // 每秒更新一次时间
+        Timer timer = new Timer(1000, e -> {
+            elapsedSeconds[0]++;
+            int minutes = (elapsedSeconds[0] % 3600) / 60;
+            int seconds = elapsedSeconds[0] % 60;
+            timeLabel.setText(String.format("%02d:%02d", minutes, seconds));
+        });
+        // 启动定时器
+        timer.start();
+        clockFrame.setVisible(true);
+        clockFrame.setAlwaysOnTop(true);
+        clockFrame.setLocation(1100,700);
+
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }

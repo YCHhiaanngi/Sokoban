@@ -7,8 +7,6 @@ import view.game.*;
 import view.lose.LoseFrame;
 import view.win.WinFrame;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.*;
 import java.util.*;
@@ -252,6 +250,13 @@ public class GameController {
                 h.setIsWin(true);
                 winFrame = new WinFrame(600, 200, getCurrentLevel());
                 winFrame.setVisible(true);
+                double time = 0;
+                PlayerData data = new PlayerData(time,getUserName(), view.getCurrentStep());
+                try {
+                    data.updateData();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             if (isLose() && !isWin()) {
                 h.setIsLose(true);
@@ -309,64 +314,6 @@ public class GameController {
         }
     }
 
-//    public int countLine(File file) throws IOException {//辅助方法：数行数
-//        int lines = 0;
-//        BufferedReader br;
-//        try {
-//            br = new BufferedReader(new FileReader(file));
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        while (br.readLine() != null) {
-//            lines++;
-//        }
-//        br.close();
-//        return lines;
-//    }
-//
-//    public int countCol(File file) throws IOException {//辅助方法：数列数
-//        int rows = 0;
-//        BufferedReader br;
-//        try {
-//            br = new BufferedReader(new FileReader(file));
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        String line = br.readLine();
-//        if (line != null) {
-//            return line.split(" ").length;
-//        } else {
-//            return 0;
-//        }
-//    }
-//
-//    public int[][] readArray(File file, int from){//辅助方法：从文件中读取二维数组
-//        try {
-//            BufferedReader br = new BufferedReader(new FileReader(file));
-//            String line;
-//            int row = 0;
-//            int numRow = countLine(file);
-//            int numCol = countCol(file);
-//            int[][] array = new int[numRow][numCol];
-//            for (int i = 0; i < from; i++) {
-//                br.readLine();
-//            }
-//            while ((line = br.readLine())!=null){
-//                String[] value = line.split(" ");
-//                for(int col=0;col<value.length;col++){
-//                    array[row][col] = Integer.parseInt(value[col]);
-//                }
-//                row++;
-//            }
-//            br.close();
-//            return array;
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
-
     public boolean isWin(){//辅助方法：判定是否胜利
         int[][] grid = model.getMatrix();
         for (int i = 0; i < grid.length; i++) {
@@ -410,8 +357,5 @@ public class GameController {
             }
         }
         return true;
-
-
     }
-
 }

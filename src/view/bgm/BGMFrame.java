@@ -82,7 +82,8 @@ public class BGMFrame extends JFrame {
             audioClip.start();
             audioClip.loop(Clip.LOOP_CONTINUOUSLY); // 循环播放
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            ErrorFrame errorFrame = new ErrorFrame(500,200,"Music cannot be loaded");
+            errorFrame.setVisible(true);
         }
     }
 
