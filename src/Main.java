@@ -1,5 +1,3 @@
-import error.ErrorFrame;
-import view.level.LevelFrame;
 import view.login.LoginFrame;
 import javax.swing.*;
 
@@ -12,9 +10,6 @@ public class Main {
             playMusic();
             LoginFrame loginFrame = new LoginFrame(1900,600);
             loginFrame.setVisible(true);
-//            LevelFrame levelFrame = new LevelFrame(500,200);
-//            levelFrame.setVisible(false);
-//            loginFrame.setLevelFrame(levelFrame);
         });
     }
 }

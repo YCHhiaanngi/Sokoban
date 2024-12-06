@@ -14,7 +14,7 @@ public class AIFrame extends JFrame {
 
     private JButton closeBtn;
 
-    public AIFrame(int width, int height, AIResult result) throws FileNotFoundException {
+    public AIFrame(int width, int height, AIResult result){
         this.setTitle("AI Result");
         this.setLayout(null);
         this.setSize(400, 300);

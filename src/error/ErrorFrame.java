@@ -25,7 +25,7 @@ public class ErrorFrame extends JFrame{
         });
 
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
     }
 

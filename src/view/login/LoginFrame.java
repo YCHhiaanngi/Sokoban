@@ -1,5 +1,6 @@
 package view.login;
 
+import error.ErrorFrame;
 import view.FrameUtil;
 import view.level.LevelFrame;
 
@@ -42,7 +43,8 @@ public class LoginFrame extends JFrame {
         try {
             backgroundImage = ImageIO.read(new File("img/login.jpg"));
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load background image", e);
+            ErrorFrame error = new ErrorFrame(500,200,"Background Image not found");
+            error.setVisible(true);
         }
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(backgroundImage);
         backgroundPanel.setBounds(0, 0, 1750, 890);
@@ -119,7 +121,8 @@ public class LoginFrame extends JFrame {
                             return;
                         }
                     } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                        ErrorFrame error = new ErrorFrame(500,200,"User file not found");
+                        error.setVisible(true);
                     }
                 }
             }
@@ -156,7 +159,8 @@ public class LoginFrame extends JFrame {
                             output.close();
                         }
                     } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                        ErrorFrame error = new ErrorFrame(500,200,"Failed to create new account");
+                        error.setVisible(true);
                     }
                 }
             }

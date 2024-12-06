@@ -1,21 +1,22 @@
 package view.game;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static view.level.LevelFrame.getCurrentLevel;
 
 public class PlayerData implements Comparable<PlayerData>{//辅助类，保存游戏数据，用于排行
-    private double time;
+    private int time;
     private String username;
     private int step;
+    private String dateFormat;
 
-    public PlayerData(double time, String username, int step){
+    public PlayerData(int time, String username, int step, String dateFormat){
         this.time = time;
         this.username = username;
         this.step = step;
+        this.dateFormat = dateFormat;
     }
 
     public void updateData() throws IOException {//更新排行数据
@@ -24,10 +25,11 @@ public class PlayerData implements Comparable<PlayerData>{//辅助类，保存�
         String line;
         List<PlayerData> rank = new ArrayList<>();
         while((line = br.readLine()) != null){
-            double time = Double.parseDouble(line.split(",")[2]);
+            int time = Integer.parseInt(line.split(",")[2]);
             String username = line.split(",")[0];
             int step = Integer.parseInt(line.split(",")[1]);
-            rank.add(new PlayerData(time,username,step));
+            String dateFormat = line.split(",")[3];
+            rank.add(new PlayerData(time,username,step,dateFormat));
         }
         rank.add(this);
         Collections.sort(rank);
@@ -48,7 +50,11 @@ public class PlayerData implements Comparable<PlayerData>{//辅助类，保存�
 
     @Override
     public String toString(){
-        return this.username+","+this.step+","+this.time;
+        if(username != null) {
+            return this.username + "," + this.step + "," + this.time + "," + this.dateFormat;
+        }else{
+            return "Guest" + "," + this.step + "," + this.time + "," + this.dateFormat;
+        }
     }
 //测试代码
 //    public static void main(String[] args) {

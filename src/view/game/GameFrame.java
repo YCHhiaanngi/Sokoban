@@ -11,16 +11,19 @@ import java.io.IOException;
 
 import controller.GameController;
 import error.ErrorFrame;
+import model.Direction;
 import model.MapMatrix;
 import view.FrameUtil;
 import view.ai.AIFrame;
 import view.bgm.BGMFrame;
+import view.clock.ClockFrame;
 import view.level.LevelFrame;
 import view.lose.LoseFrame;
 import view.win.WinFrame;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static view.game.Hero.heroDirection;
 import static view.level.LevelFrame.getCurrentLevel;
 import static view.login.LoginFrame.getUserName;
 import static view.login.LoginFrame.isDayTheme;
@@ -70,6 +73,8 @@ public class GameFrame extends JFrame {
             }
         }
 
+        heroDirection = Direction.RIGHT;
+
         // 创建背景面板
         view.login.BackgroundPanel backgroundPanel = new view.login.BackgroundPanel(gameImage);
         backgroundPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
@@ -98,25 +103,7 @@ public class GameFrame extends JFrame {
         this.stepLabel = FrameUtil.createJLabel(layeredPane, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50, JLayeredPane.PALETTE_LAYER);
         this.bgmBtn = FrameUtil.createButton(layeredPane, "BGM Setting", new Point(gamePanel.getWidth() + 360, 540), 200, 80, JLayeredPane.PALETTE_LAYER);
         gamePanel.setStepLabel(stepLabel);
-        JFrame clockFrame = new JFrame("time counter");
-        clockFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        clockFrame.setSize(300, 150);
-        clockFrame.setLayout(new BorderLayout());
-
-        JLabel timeLabel = new JLabel("00:00:00", SwingConstants.CENTER);
-        timeLabel.setFont(new Font("Arial", Font.BOLD, 30));
-        clockFrame.add(timeLabel, BorderLayout.CENTER);
-// 初始化计时变量
-        final int[] elapsedSeconds = {0};
-// 每秒更新一次时间
-        Timer timer = new Timer(1000, e -> {
-            elapsedSeconds[0]++;
-            int minutes = (elapsedSeconds[0] % 3600) / 60;
-            int seconds = elapsedSeconds[0] % 60;
-            timeLabel.setText(String.format("%02d:%02d", minutes, seconds));
-        });
-// 启动定时器
-        timer.start();
+        JFrame clockFrame = new ClockFrame();
         clockFrame.setVisible(true);
         clockFrame.setAlwaysOnTop(true);
         clockFrame.setLocation(1100,700);
@@ -147,12 +134,8 @@ public class GameFrame extends JFrame {
         });
         this.AISolveBtn.addActionListener(e -> {
             gamePanel.requestFocusInWindow();
-            try {
-                AIFrame aiFrame = new AIFrame(600,450, controller.AISolve());
-                aiFrame.setVisible(true);
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
+            AIFrame aiFrame = new AIFrame(600,450, controller.AISolve());
+            aiFrame.setVisible(true);
         });
         this.upBtn.addActionListener(e -> {
             gamePanel.doMoveUp();
@@ -198,29 +181,6 @@ public class GameFrame extends JFrame {
         });
 
         //todo: add other button here
-
-        JFrame clockFrame = new JFrame("time counter");
-        clockFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        clockFrame.setSize(300, 150);
-        clockFrame.setLayout(new BorderLayout());
-
-        JLabel timeLabel = new JLabel("00:00:00", SwingConstants.CENTER);
-        timeLabel.setFont(new Font("Arial", Font.BOLD, 30));
-        clockFrame.add(timeLabel, BorderLayout.CENTER);
-        // 初始化计时变量
-        final int[] elapsedSeconds = {0};
-        // 每秒更新一次时间
-        Timer timer = new Timer(1000, e -> {
-            elapsedSeconds[0]++;
-            int minutes = (elapsedSeconds[0] % 3600) / 60;
-            int seconds = elapsedSeconds[0] % 60;
-            timeLabel.setText(String.format("%02d:%02d", minutes, seconds));
-        });
-        // 启动定时器
-        timer.start();
-        clockFrame.setVisible(true);
-        clockFrame.setAlwaysOnTop(true);
-        clockFrame.setLocation(1100,700);
 
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

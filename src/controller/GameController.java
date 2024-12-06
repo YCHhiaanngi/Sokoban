@@ -9,11 +9,14 @@ import view.win.WinFrame;
 
 import javax.sound.sampled.Clip;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static view.clock.ClockFrame.playTimeSecond;
+import static view.clock.ClockFrame.timer;
 import static view.game.AISolver.aiSolve;
 import static view.game.Hero.heroDirection;
 import static view.level.LevelFrame.getCurrentLevel;
@@ -101,7 +104,7 @@ public class GameController {
         loadLevelFrame = new LoadLevelFrame(2000,1000,model,path);//创建新loadLevel窗口
         loadLevelFrame.setVisible(true);
         stopAutoSave();//停止自动保存
-        heroDirection = Direction.DOWN;
+        heroDirection = Direction.RIGHT;
     }
 
     public void saveGame(){
@@ -151,7 +154,7 @@ public class GameController {
                 model.setMatrix(map);
                 view.initialGame();
                 view.setCurrentStep(currentStep);
-                heroDirection = Direction.DOWN;
+                heroDirection = Direction.RIGHT;
             }else {
                 ErrorFrame errorFrame = new ErrorFrame(500,200,"You don't have any progress in this level.");
                 errorFrame.setVisible(true);
@@ -159,7 +162,8 @@ public class GameController {
 
             br.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ErrorFrame error = new ErrorFrame(500,200,"Previous progress cannot be loaded");
+            error.setVisible(true);
         }
     }
 
@@ -250,12 +254,16 @@ public class GameController {
                 h.setIsWin(true);
                 winFrame = new WinFrame(600, 200, getCurrentLevel());
                 winFrame.setVisible(true);
-                double time = 0;
-                PlayerData data = new PlayerData(time,getUserName(), view.getCurrentStep());
+                timer.stop();
+                Date date = new Date();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String dateFormat = formatter.format(date);
+                PlayerData data = new PlayerData(playTimeSecond,getUserName(), view.getCurrentStep()+1,dateFormat);
                 try {
                     data.updateData();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    ErrorFrame error = new ErrorFrame(500,200,"Fail to load the rank");
+                    error.setVisible(true);
                 }
             }
             if (isLose() && !isWin()) {
@@ -310,6 +318,8 @@ public class GameController {
             reader.close();
             return matrix;
         } catch (IOException e) {
+            ErrorFrame error = new ErrorFrame(500,200,"Your level cannot be read");
+            error.setVisible(true);
             throw new RuntimeException(e);
         }
     }
@@ -333,23 +343,13 @@ public class GameController {
             for (int j = 1; j < model.getWidth()-1; j++) {
                 if(grid[i][j] == 10 || grid[i][j] == 12){//检测是否可以前往上下左右中的任意方向。
                     // 可以被推动需要同时满足两个条件：一侧有空位或者玩家或者目标点并且对侧是空位或者目标点或者玩家
-//                    System.out.println(i+" "+j);
                     if((grid[i-1][j] == 0 || grid[i-1][j]/10 == 2 || grid[i-1][j] == 2) && (grid[i+1][j] == 0 || grid[i+1][j]/10 == 2 || grid[i+1][j] == 2)){
                         sum++;
-//                        System.out.println(true);
                     }
-//                    if((grid[i+1][j] == 0 || grid[i+1][j]/10 == 2 || grid[i+1][j] == 2) && (grid[i-1][j] == 0 || grid[i-1][j]/10 == 2) || grid[i-1][j] == 2){
-//                        sum++;
-//                        System.out.println(true);
-//                    }
                     if((grid[i][j-1] == 0 || grid[i][j-1]/10 == 2 || grid[i][j-1] == 2) && (grid[i][j+1] == 0 || grid[i][j+1]/10 == 2 || grid[i][j+1] == 2)){
                         sum++;
-//                        System.out.println(true);
                     }
-//                    if((grid[i][j+1] == 0 || grid[i][j+1]/10 == 2 || grid[i][j+1] == 2) && (grid[i][j-1] == 0 || grid[i][j-1]/10 == 2)){
-//                        sum++;
-//                        System.out.println(true);
-//                    }
+
                     if(sum != 0){//推得动
                         return false;
                     }

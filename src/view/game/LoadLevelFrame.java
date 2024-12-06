@@ -64,12 +64,8 @@ public class LoadLevelFrame extends JFrame {
         });
         this.AISloveBtn.addActionListener(e -> {
             gamePanel.requestFocusInWindow();
-            try {
-                AIFrame aiFrame = new AIFrame(600,450, controller.AISolve());
-                aiFrame.setVisible(true);
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
+            AIFrame aiFrame = new AIFrame(600,450, controller.AISolve());
+            aiFrame.setVisible(true);
         });
         this.upBtn.addActionListener(e -> {
             gamePanel.doMoveUp();

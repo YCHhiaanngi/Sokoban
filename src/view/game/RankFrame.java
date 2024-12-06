@@ -27,14 +27,15 @@ public class RankFrame extends JFrame {
         // 设置窗口大小
         setSize(600, 400);
         // 设置窗口关闭操作
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // 创建表格模型
         tableModel = new DefaultTableModel();
         // 添加列名
         tableModel.addColumn("User Name");
         tableModel.addColumn("Steps");
-        tableModel.addColumn("Time");
+        tableModel.addColumn("Time(Seconds)");
+        tableModel.addColumn("Date");
 
         // 创建表格
         rankTable = new JTable(tableModel);
