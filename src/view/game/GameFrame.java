@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,6 +27,7 @@ import java.util.Date;
 
 import static view.game.Hero.heroDirection;
 import static view.level.LevelFrame.getCurrentLevel;
+import static view.level.LevelFrame.setCurrentLevel;
 import static view.login.LoginFrame.getUserName;
 import static view.login.LoginFrame.isDayTheme;
 
@@ -103,10 +106,11 @@ public class GameFrame extends JFrame {
         this.stepLabel = FrameUtil.createJLabel(layeredPane, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50, JLayeredPane.PALETTE_LAYER);
         this.bgmBtn = FrameUtil.createButton(layeredPane, "BGM Setting", new Point(gamePanel.getWidth() + 360, 540), 200, 80, JLayeredPane.PALETTE_LAYER);
         gamePanel.setStepLabel(stepLabel);
-        JFrame clockFrame = new ClockFrame();
+        ClockFrame clockFrame = new ClockFrame(this);
         clockFrame.setVisible(true);
         clockFrame.setAlwaysOnTop(true);
         clockFrame.setLocation(1100,700);
+
 
         if(getUserName() == null){
             saveBtn.setEnabled(false);
@@ -126,10 +130,23 @@ public class GameFrame extends JFrame {
             try {
                 controller.loadGame(string);
                 this.setVisible(false);
+                clockFrame.stopTimer();
+                setCurrentLevel(-1);
                 gamePanel.requestFocusInWindow();//enable key listener
             }catch(Exception ex){
-                ErrorFrame errorFrame = new ErrorFrame(500,200,"Map file not found");
-                errorFrame.setVisible(true);
+                if(ex instanceof FileNotFoundException) {
+                    ErrorFrame errorFrame = new ErrorFrame(500, 200, "Map file not found");
+                    errorFrame.setVisible(true);
+                    gamePanel.requestFocusInWindow();
+                }else if(ex instanceof IllegalArgumentException) {
+                    ErrorFrame errorFrame = new ErrorFrame(500, 200, "The loading level is not available");
+                    errorFrame.setVisible(true);
+                    gamePanel.requestFocusInWindow();
+                }else{
+                    ErrorFrame errorFrame = new ErrorFrame(500, 200, "Please enter your file path");
+                    errorFrame.setVisible(true);
+                    gamePanel.requestFocusInWindow();
+                }
             }
         });
         this.AISolveBtn.addActionListener(e -> {

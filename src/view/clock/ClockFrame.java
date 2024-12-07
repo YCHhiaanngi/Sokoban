@@ -1,18 +1,24 @@
 package view.clock;
 
+import view.game.GameFrame;
+import view.game.GamePanel;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class ClockFrame extends JFrame {
 
     public static Timer timer;
     public static int playTimeSecond;
 
-    public ClockFrame(){
+    public ClockFrame(GameFrame gameFrame){
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(300, 150);
         this.setLayout(new BorderLayout());
         this.setTitle("time counter");
+        this.setFocusable(false);
 
         JLabel timeLabel = new JLabel("00:00", SwingConstants.CENTER);
         timeLabel.setFont(new Font("Arial", Font.BOLD, 30));
@@ -29,5 +35,10 @@ public class ClockFrame extends JFrame {
         });
         // 启动定时器
         timer.start();
+    }
+
+    public void stopTimer(){
+        timer.stop();
+        this.setVisible(false);
     }
 }

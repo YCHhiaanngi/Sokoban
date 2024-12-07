@@ -17,7 +17,11 @@ public class LoseFrame extends JFrame {
     private JButton okBtn;
 
     public LoseFrame(int width, int height, int currentLevel)  {
-        this.setTitle("You Lose in Level "+currentLevel);
+        if(getCurrentLevel()!=-1) {
+            this.setTitle("You lose in Level " + currentLevel);
+        }else{
+            this.setTitle("You lose in load level");
+        }
         this.setLayout(null);
         this.setSize(width, height);
         JLayeredPane layeredPane = new JLayeredPane();

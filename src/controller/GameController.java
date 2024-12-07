@@ -72,39 +72,53 @@ public class GameController {
     }
 
     public void restartGame() {//重新开始（关卡模式）
-        File file = new File("map/Level"+getCurrentLevel()+".txt");//从同关卡的初始文件中覆盖当前的MapMatrix
-        int[][] map = null;
-        map = readArray(file,0);
-        view.removeAll();
-        model.setMatrix(map);
-        view.initialGame();
-        track.clear();
-        int[][] grid = deepCopy(model.getMatrix());
-        track.push(grid);
-        heroDirection = Direction.DOWN;
+        try {
+            File file = new File("map/Level" + getCurrentLevel() + ".txt");//从同关卡的初始文件中覆盖当前的MapMatrix
+            int[][] map = null;
+            map = readArray(file, 0);
+            view.removeAll();
+            model.setMatrix(map);
+            view.initialGame();
+            track.clear();
+            int[][] grid = deepCopy(model.getMatrix());
+            track.push(grid);
+            heroDirection = Direction.DOWN;
+        }catch(Exception e){
+            ErrorFrame error = new ErrorFrame(500,200,"Level file cannot be loaded");
+            error.setVisible(true);
+        }
     }
 
     public void restartGame(String path) {//重新开始（自定义模式）
-        File file = new File(path);//从path中加载关卡文件
-        int[][] map = null;
-        map = readArray(file,0);
-        view.removeAll();
-        model.setMatrix(map);
-        view.initialGame();
-        track.clear();
-        int[][] grid = deepCopy(model.getMatrix());
-        track.push(grid);
-        heroDirection = Direction.DOWN;
+        try {
+            File file = new File(path);//从path中加载关卡文件
+            int[][] map = null;
+            map = readArray(file, 0);
+            view.removeAll();
+            model.setMatrix(map);
+            view.initialGame();
+            track.clear();
+            int[][] grid = deepCopy(model.getMatrix());
+            track.push(grid);
+            heroDirection = Direction.DOWN;
+        }catch(Exception e){
+            ErrorFrame error = new ErrorFrame(500,200,"Level file cannot be loaded");
+            error.setVisible(true);
+        }
     }
 
-    public void loadGame(String path) throws FileNotFoundException{//加载自定义关卡
+    public void loadGame(String path) throws IOException,IllegalArgumentException {//加载自定义关卡
         File file = new File(path);//载入文件
-        int[][] map = readArray(file,0);
-        model.setMatrix(map);
-        loadLevelFrame = new LoadLevelFrame(2000,1000,model,path);//创建新loadLevel窗口
-        loadLevelFrame.setVisible(true);
-        stopAutoSave();//停止自动保存
-        heroDirection = Direction.RIGHT;
+        int[][] map = readArray(file, 0);
+        if (isAvailableLevel(map)) {
+            model.setMatrix(map);
+            loadLevelFrame = new LoadLevelFrame(2000, 1000, model, path);//创建新loadLevel窗口
+            loadLevelFrame.setVisible(true);
+            stopAutoSave();//停止自动保存
+            heroDirection = Direction.RIGHT;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void saveGame(){
@@ -155,7 +169,7 @@ public class GameController {
                 view.initialGame();
                 view.setCurrentStep(currentStep);
                 heroDirection = Direction.RIGHT;
-            }else {
+            }else {;
                 ErrorFrame errorFrame = new ErrorFrame(500,200,"You don't have any progress in this level.");
                 errorFrame.setVisible(true);
             }
@@ -255,15 +269,17 @@ public class GameController {
                 winFrame = new WinFrame(600, 200, getCurrentLevel());
                 winFrame.setVisible(true);
                 timer.stop();
-                Date date = new Date();
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String dateFormat = formatter.format(date);
-                PlayerData data = new PlayerData(playTimeSecond,getUserName(), view.getCurrentStep()+1,dateFormat);
-                try {
-                    data.updateData();
-                } catch (IOException e) {
-                    ErrorFrame error = new ErrorFrame(500,200,"Fail to load the rank");
-                    error.setVisible(true);
+                if(getCurrentLevel()!=-1) {
+                    Date date = new Date();
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String dateFormat = formatter.format(date);
+                    PlayerData data = new PlayerData(playTimeSecond, getUserName(), view.getCurrentStep() + 1, dateFormat);
+                    try {
+                        data.updateData();
+                    } catch (IOException e) {
+                        ErrorFrame error = new ErrorFrame(500, 200, "Fail to load the rank");
+                        error.setVisible(true);
+                    }
                 }
             }
             if (isLose() && !isWin()) {
@@ -284,7 +300,7 @@ public class GameController {
         return aiSolve(model.getMatrix());
     }
 
-    public static int[][] readArray(File file, int from)  {
+    public static int[][] readArray(File file, int from) throws IllegalArgumentException,IOException {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
@@ -316,11 +332,18 @@ public class GameController {
 
             // Close the BufferedReader
             reader.close();
+            if(!isAvailableLevel(matrix)){
+                throw new IllegalArgumentException();
+            }
             return matrix;
-        } catch (IOException e) {
-            ErrorFrame error = new ErrorFrame(500,200,"Your level cannot be read");
+        } catch (IllegalArgumentException e) {
+            ErrorFrame error = new ErrorFrame(500,200,"Level file might be damaged");
             error.setVisible(true);
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException();
+        }catch(IOException ex){
+            ErrorFrame error = new ErrorFrame(500,200,"Level file cannot be found");
+            error.setVisible(true);
+            throw new RuntimeException();
         }
     }
 
@@ -358,4 +381,39 @@ public class GameController {
         }
         return true;
     }
+
+    public static boolean isAvailableLevel(int[][] map){//辅助方法：判断一个二维数组是否为合法关卡地图
+        int heroCount = 0;
+        int goalCount = 0;
+        int boxCount = 0;
+        if (map != null) {
+            int width = map[0].length;
+            for (int i = 1; i < map.length; i++) {
+                if(map[i].length != width){
+                    return false;
+                }
+                for (int j = 0; j < map[i].length; j++) {
+                    if(map[i][j] != 0 &&map[i][j] != 1 &&map[i][j] != 2 &&map[i][j] != 12 &&map[i][j] != 22 &&map[i][j] != 10 &&map[i][j] != 20){
+                        return false;
+                    }
+                    if(map[i][j]/10 == 2){
+                        heroCount++;
+                    }
+                    if(map[i][j]/10 == 1){
+                        boxCount++;
+                    }
+                    if(map[i][j]%10 == 2){
+                        goalCount++;
+                    }
+                }
+            }
+            if(goalCount != boxCount || heroCount != 1 || goalCount == 0){
+                return false;
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
+//todo:LoadLevelFrame加载关卡界面未优化,errorFrame,winFrame,loseFrame文字不居中
