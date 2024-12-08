@@ -17,7 +17,7 @@ public class ErrorFrame extends JFrame{
         this.setContentPane(layeredPane);
 
 
-        this.label = FrameUtil.createJLabel(layeredPane, new Point(130, height / 2-40), 500, 50, "ERROR: " + message,JLayeredPane.MODAL_LAYER);
+        this.label = FrameUtil.createJLabel(layeredPane, new Point(100, height / 2-40), 500, 50, "ERROR: " + message,JLayeredPane.MODAL_LAYER);
         this.okBtn = FrameUtil.createButton(layeredPane, "OK", new Point(150, height / 2+10 ), 100, 50,JLayeredPane.MODAL_LAYER);
 
         okBtn.addActionListener(e -> {

@@ -36,7 +36,7 @@ public class LevelFrame extends JFrame {
             }
         }else{
             try {
-                levelImage = ImageIO.read(new File("img/level-night.jpg"));
+                levelImage = ImageIO.read(new File("img/level-night.jpeg"));
             } catch (IOException e) {
                 ErrorFrame errorFrame = new ErrorFrame(500,200,"Failed to load night theme image");
                 errorFrame.setVisible(true);

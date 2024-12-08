@@ -69,7 +69,7 @@ public class GameFrame extends JFrame {
             }
         } else {
             try {
-                gameImage = ImageIO.read(new File("img/level-night.jpg"));
+                gameImage = ImageIO.read(new File("img/level-night.jpeg"));
             } catch (IOException e) {
                 ErrorFrame errorFrame = new ErrorFrame(500,200,"Failed to load night theme image");
                 errorFrame.setVisible(true);
