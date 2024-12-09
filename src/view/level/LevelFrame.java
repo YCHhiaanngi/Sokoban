@@ -2,6 +2,7 @@ package view.level;
 
 import error.ErrorFrame;
 import model.MapMatrix;
+import view.CircularButton;
 import view.FrameUtil;
 import view.game.GameFrame;
 import view.game.RankFrame;
@@ -51,7 +52,14 @@ public class LevelFrame extends JFrame {
         JButton level3Btn = FrameUtil.createButton(layeredPane, "Level3", new Point(150, height / 2 - 50+300), 600, 100,JLayeredPane.MODAL_LAYER);
         JButton level4Btn = FrameUtil.createButton(layeredPane, "Level4", new Point(150, height / 2 - 50+450), 600, 100,JLayeredPane.MODAL_LAYER);
         JButton level5Btn = FrameUtil.createButton(layeredPane, "Level5", new Point(150, height / 2 - 50+600), 600, 100,JLayeredPane.MODAL_LAYER);
-        JButton RankBtn = FrameUtil.createButton(layeredPane, "Ranking", new Point(850, height / 2 - 50+300), 600, 100,JLayeredPane.MODAL_LAYER);
+        // 创建 CircularButton 按钮
+        CircularButton RankBtn = new CircularButton("Ranking", 100); // 假设半径为 100
+
+// 设置按钮的位置和层级
+        RankBtn.setBounds(1000, 400, (int)(100 * 2), (int)(100 * 2)); // X, Y, width, height
+
+        JLayeredPane layeredPanecirc = new JLayeredPane();
+        layeredPane.add(RankBtn, JLayeredPane.MODAL_LAYER);
 
         level1Btn.addActionListener(l->{
             System.out.println("Level1 button clicked");

@@ -3,6 +3,8 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
+import static java.lang.Math.PI;
+
 /**
  * This class is to create basic JComponent and add them to the specified layer of a JLayeredPane.
  */
@@ -36,6 +38,13 @@ public class FrameUtil {
         JButton button = new JButton(name);
         button.setLocation(location);
         button.setSize(width, height);
+        layeredPane.add(button, layer);
+        return button;
+    }
+    public static JButton createButtoncirc(JLayeredPane layeredPane, String name, Point location, double r, int layer) {
+        JButton button = new JButton(name);
+        button.setLocation(location);
+        button.setSize((int)(r * 2), (int)(r * 2));
         layeredPane.add(button, layer);
         return button;
     }

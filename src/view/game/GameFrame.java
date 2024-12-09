@@ -106,6 +106,7 @@ public class GameFrame extends JFrame {
         this.stepLabel = FrameUtil.createJLabel(layeredPane, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50, JLayeredPane.PALETTE_LAYER);
         this.bgmBtn = FrameUtil.createButton(layeredPane, "BGM Setting", new Point(gamePanel.getWidth() + 360, 540), 200, 80, JLayeredPane.PALETTE_LAYER);
         gamePanel.setStepLabel(stepLabel);
+        if(!isDayTheme) {stepLabel.setForeground(Color.white);  }
         ClockFrame clockFrame = new ClockFrame(this);
         clockFrame.setVisible(true);
         clockFrame.setAlwaysOnTop(true);
