@@ -68,13 +68,14 @@ public class LoadLevelFrame extends JFrame {
         this.restartBtn = FrameUtil.createButton(layeredPane, "Restart", new Point(gamePanel.getWidth() + 80, 140), 200, 80, JLayeredPane.PALETTE_LAYER);
         this.quitBtn = FrameUtil.createButton(layeredPane, "Quit", new Point(gamePanel.getWidth() + 360, 140), 200, 80, JLayeredPane.PALETTE_LAYER);
         this.undoBtn = FrameUtil.createButton(layeredPane, "Save", new Point(gamePanel.getWidth() + 360, 245), 200, 80, JLayeredPane.PALETTE_LAYER);
-        this.upBtn = FrameUtil.createButton(layeredPane, "↑", new Point(gamePanel.getWidth() + 200, 500), 70, 70, JLayeredPane.PALETTE_LAYER);
-        this.downBtn = FrameUtil.createButton(layeredPane, "↓", new Point(gamePanel.getWidth() + 200, 570), 70, 70, JLayeredPane.PALETTE_LAYER);
-        this. AISloveBtn= FrameUtil.createButton(layeredPane, "AI Solver", new Point(gamePanel.getWidth() + 80, 245), 200, 80, JLayeredPane.PALETTE_LAYER);
-        this.leftBtn = FrameUtil.createButton(layeredPane, "←", new Point(gamePanel.getWidth() + 130, 570), 70, 70, JLayeredPane.PALETTE_LAYER);
-        this.rightBtn = FrameUtil.createButton(layeredPane, "→", new Point(gamePanel.getWidth() + 270, 570), 70, 70, JLayeredPane.PALETTE_LAYER);
+        this.upBtn = FrameUtil.createButton(layeredPane, "↑", new Point(gamePanel.getWidth() + 270, 500), 70, 70, JLayeredPane.PALETTE_LAYER);
+        this.downBtn = FrameUtil.createButton(layeredPane, "↓", new Point(gamePanel.getWidth() + 270, 570), 70, 70, JLayeredPane.PALETTE_LAYER);
+        this.leftBtn = FrameUtil.createButton(layeredPane, "←", new Point(gamePanel.getWidth() + 200, 570), 70, 70, JLayeredPane.PALETTE_LAYER);
+        this.rightBtn = FrameUtil.createButton(layeredPane, "→", new Point(gamePanel.getWidth() + 340, 570), 70, 70, JLayeredPane.PALETTE_LAYER);
         this.stepLabel = FrameUtil.createJLabel(layeredPane, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 90), 180, 50, JLayeredPane.PALETTE_LAYER);
         this.bgmBtn = FrameUtil.createButton(layeredPane, "BGM Setting", new Point(gamePanel.getWidth() + 360, 360), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this.undoBtn = FrameUtil.createButton(layeredPane, "Undo", new Point(gamePanel.getWidth() + 80, 360), 200, 80, JLayeredPane.PALETTE_LAYER);
+        this. AISloveBtn= FrameUtil.createButton(layeredPane, "AI Solver", new Point(gamePanel.getWidth() + 80, 245), 200, 80, JLayeredPane.PALETTE_LAYER);
         gamePanel.setStepLabel(stepLabel);
         if(!isDayTheme) {stepLabel.setForeground(Color.white);  }
 
