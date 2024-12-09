@@ -56,7 +56,7 @@ public class LevelFrame extends JFrame {
         CircularButton RankBtn = new CircularButton("Ranking", 100); // 假设半径为 100
 
 // 设置按钮的位置和层级
-        RankBtn.setBounds(1000, 400, (int)(100 * 2), (int)(100 * 2)); // X, Y, width, height
+        RankBtn.setBounds(1000, 350, (int)(100 * 2), (int)(100 * 2)); // X, Y, width, height
 
         JLayeredPane layeredPanecirc = new JLayeredPane();
         layeredPane.add(RankBtn, JLayeredPane.MODAL_LAYER);
