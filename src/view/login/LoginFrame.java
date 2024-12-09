@@ -58,7 +58,7 @@ public class LoginFrame extends JFrame {
         submitBtn = FrameUtil.createButton(layeredPane, "Confirm", new Point(540, 310), 100, 40,JLayeredPane.MODAL_LAYER);
         resetBtn = FrameUtil.createButton(layeredPane, "Reset", new Point(950, 310), 100, 40,JLayeredPane.MODAL_LAYER);
         signinBtn = FrameUtil.createButton(layeredPane, "Sign in", new Point(570, 400), 100, 40,JLayeredPane.MODAL_LAYER);
-        guestBtn = FrameUtil.createButton(layeredPane, "Guest Mode", new Point(920, 400), 100, 40,JLayeredPane.MODAL_LAYER);
+        guestBtn = FrameUtil.createButton(layeredPane, "Guest", new Point(920, 400), 100, 40,JLayeredPane.MODAL_LAYER);
         chooseDaytime = FrameUtil.createButton(layeredPane, "Daytime", new Point(610, 490), 100, 40,JLayeredPane.MODAL_LAYER);
         chooseNight = FrameUtil.createButton(layeredPane, "Night",new Point(890, 490), 100, 40,JLayeredPane.MODAL_LAYER);
 

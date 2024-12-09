@@ -196,6 +196,7 @@ public class GameFrame extends JFrame {
         this.bgmBtn.addActionListener(e -> {
             BGMFrame bgmFrame = new BGMFrame(500,200);
             bgmFrame.setVisible(true);
+            gamePanel.requestFocusInWindow();
         });
 
         //todo: add other button here

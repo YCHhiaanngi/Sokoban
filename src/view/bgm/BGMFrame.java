@@ -50,7 +50,7 @@ public class BGMFrame extends JFrame {
 
         this.setVisible(true);
 
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private static void setVolume(int volume) {
