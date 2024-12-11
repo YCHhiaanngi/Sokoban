@@ -88,6 +88,7 @@ public class BGMFrame extends JFrame {
     }
 
 //    public static void main(String[] args) {
+//        playMusic();
 //        BGMFrame frame = new BGMFrame(500,200);
 //        frame.setVisible(true);
 //    }

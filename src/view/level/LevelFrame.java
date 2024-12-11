@@ -6,6 +6,7 @@ import view.CircularButton;
 import view.FrameUtil;
 import view.game.GameFrame;
 import view.game.RankFrame;
+import view.replay.ReplayFrame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -54,12 +55,15 @@ public class LevelFrame extends JFrame {
         JButton level5Btn = FrameUtil.createButton(layeredPane, "Level5", new Point(150, height / 2 - 50+600), 600, 100,JLayeredPane.MODAL_LAYER);
         // 创建 CircularButton 按钮
         CircularButton RankBtn = new CircularButton("Ranking", 100); // 假设半径为 100
+        CircularButton ReplayBtn = new CircularButton("Replay",100);
 
 // 设置按钮的位置和层级
-        RankBtn.setBounds(1000, 350, (int)(100 * 2), (int)(100 * 2)); // X, Y, width, height
+        RankBtn.setBounds(1000, 150, (int)(100 * 2), (int)(100 * 2)); // X, Y, width, height
+        ReplayBtn.setBounds(1000, 550, (int)(100 * 2), (int)(100 * 2));
 
         JLayeredPane layeredPanecirc = new JLayeredPane();
         layeredPane.add(RankBtn, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(ReplayBtn, JLayeredPane.MODAL_LAYER);
 
         level1Btn.addActionListener(l->{
             System.out.println("Level1 button clicked");
@@ -181,6 +185,16 @@ public class LevelFrame extends JFrame {
         RankBtn.addActionListener(e -> {
             RankFrame rankFrame = new RankFrame();
             rankFrame.setVisible(true);
+        });
+
+        ReplayBtn.addActionListener(e -> {
+            try {
+                ReplayFrame replayFrame = new ReplayFrame();
+                replayFrame.setVisible(true);
+                replayFrame.update(1);
+            } catch (IOException | InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         this.setLocationRelativeTo(null);

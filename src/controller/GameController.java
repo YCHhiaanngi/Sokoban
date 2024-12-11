@@ -22,6 +22,7 @@ import static view.game.Hero.heroDirection;
 import static view.level.LevelFrame.getCurrentLevel;
 import static view.login.LoginFrame.getUserName;
 import static view.login.LoginFrame.getPassword;
+import static view.replay.ReplayFrame.writeReplay;
 
 /**
  * It is a bridge to combine GamePanel(view) and MapMatrix(model) in one game.
@@ -41,7 +42,7 @@ public class GameController {
 
     private static Clip clip;
 
-    public GameController(GamePanel view, MapMatrix model) throws FileNotFoundException {
+    public GameController(GamePanel view, MapMatrix model){
         this.view = view;
         this.model = model;
         this.track = new Stack<>();
@@ -185,16 +186,11 @@ public class GameController {
         //重置地图
         if(track.size() == 1){
             ErrorFrame errorFrame = new ErrorFrame(500,200,"empty");
+            errorFrame.setVisible(true);
         }else {
             view.removeAll();
             int[][] grid = track.pop();
             model.setMatrix(grid);
-//            for (int i = 0; i < grid.length; i++) {
-//                for (int j = 0; j < grid[0].length; j++) {
-//                    System.out.print(grid[i][j] + " ");
-//                }
-//                System.out.println();
-//            }
             int step = view.getCurrentStep();//因为initialGame()方法会将step重置为0，所以要将当前步骤事先存储起来
             view.initialGame();
             view.setCurrentStep(step-1);
@@ -269,6 +265,12 @@ public class GameController {
                 winFrame = new WinFrame(600, 200, getCurrentLevel());
                 winFrame.setVisible(true);
                 timer.stop();
+                track.push(map);
+                try {
+                    writeReplay(track,"Replay/demo.txt");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 if(getCurrentLevel()!=-1) {
                     Date date = new Date();
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
